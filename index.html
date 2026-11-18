@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alvin & Sandra Wedding Timeline</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FDFBF7',
+                        burgundy: {
+                            50: '#f5eef1',
+                            100: '#eadddf',
+                            200: '#d0b0b8',
+                            300: '#ae7c89',
+                            400: '#8e5161',
+                            500: '#753a4a',
+                            600: '#622b3a',
+                            700: '#52202f',
+                            800: '#451d29', // Main deep base
+                            900: '#3a1b24',
+                            950: '#1d0910',
+                        },
+                        stone: {
+                            50:  '#FDFBF7',
+                            100: '#F7E6EB',
+                            200: '#E3BDC8',
+                            300: '#CE9AA8',
+                            400: '#A2707E',
+                            500: '#7A4351',
+                            600: '#5E2F3C',
+                            700: '#47222D',
+                            800: '#33191F',
+                            900: '#241419',
+                        }
+                    },
+                },
+            },
+        };
+    </script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        body { font-family: 'Inter', -apple-system, sans-serif; overflow-x: hidden; background-color: #451d29; color: #FDFBF7; margin: 0; padding: 0; }
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+        h1, h2 { text-transform: uppercase; letter-spacing: 0.06em; }
+        .font-mono, .time-pill { font-family: 'Courier Prime', 'Courier New', monospace; letter-spacing: 0.04em; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #622b3a; border-radius: 4px; }
+        .custom-checkbox:checked + div { background-color: currentColor; border-color: currentColor; }
+        .custom-checkbox:checked + div svg { display: block; }
+        html { scroll-behavior: smooth; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ============================================================================
+        // 🛠️ MASTER CONFIGURATION
+        // ============================================================================
+        const CONFIG = {
+            coupleNames: "Alvin & Sandra",
+            weddingDate: "2024-08-19T00:00:00", 
+            displayDate: "19th August",
+            weddingLocation: "Sydney, Australia",
+            pinCode: "1234",
+            theme: "custom", 
+            footerMessage: "Thank you for being part of our special day.",
+            footerSignoff: "A & S",
+
+            helpfulLinks: [
+                { title: 'Official Google Runsheet', url: 'https://docs.google.com/spreadsheets/d/1uTfUJgTGePs1yyxxlVuDnqt1OKu8XDxza3mB9X5X2_s/edit?gid=0#gid=0' },
+                { title: 'Draft Wedding Program', url: 'https://www.dropbox.com/scl/fi/v56x0spjb81wogirn4c2r/SZAM_261120_Church-Ceremony-Booklet_FINAL-DIGITAL.pdf' }
+            ],
+
+            filters: [
+                { id: 'all', label: 'Everyone' },
+                { id: 'bride', label: 'Bride' },
+                { id: 'groom', label: 'Groom' },
+                { id: 'bridesmaids', label: 'Bridesmaids' },
+                { id: 'groomsmen', label: 'Groomsmen' },
+                { id: 'moh', label: 'Jess (MOH)' },
+                { id: 'tp', label: 'TP' },
+                { id: 'mc_ned', label: 'MC Ned' }
+            ],
+
+            checklists: {
+                moh: {
+                    theme: 'burgundy', title: 'Jess (MOH)',
+                    items: ['Bridesmaid Dress + Scarf Piece', 'Tea Ceremony Dress', 'Nude Shoes', 'Pyjamas', 'Change of clothes (Saturday) + Shoes', 'Under garments (Bra, nipple pasties, undies etc)', 'Jewellery + my wedding ring', 'Perfume and Deodorant', 'Essential Makeup/Touch Up + Contacts', 'Skin Care and Day before prep', 'Bridal Emergency Bag (White bag)', 'Floral Tools Bag (Thorn ripper, gloves, floral tape, safety pins, thread, ribbon)', 'Tooth Brush', 'Water Bottle', 'Maid of Honor Speech', 'Charging cable and portable chargers (x2)', 'Sandra Memory Box', 'Osmo + Richo', 'Energy Mints', 'Photos and Brooches', 'Small bag for phone, digicam and wallet', 'Extra Steamer'],
+                    footer: "You've got this, Jess!"
+                },
+                tp: {
+                    theme: 'charcoal', title: 'Tharinda (TP)',
+                    items: ['Water bottles - Church back up', 'Gummies (Sugar so no one passes out)', 'Light snacks (healthy chips, protein bars etc)', 'Overnight clothes + Jess extra clothes', 'Wedding outfit (Suit + Shoes)', 'Extra portable Charger', 'Korean Pear Drink', 'Wishing well on cards with money!', 'Grace Hotel booked', 'City parking booked for Friday overnight stay', 'Jumper x2 (one for Jess)'],
+                    footer: "MOH Slave Duties"
+                },
+                bride: {
+                    theme: 'cream', title: 'The Bride',
+                    items: ['Wedding Dress', 'Tea Ceremony Dress', 'Change of clothes + shoes for later', 'Rings', 'Vows', 'Jewellery', 'Makeup / Touch ups', 'Perfume'],
+                    footer: "Have the best day ever"
+                },
+                groom: {
+                    theme: 'dark', title: 'The Groom',
+                    items: ['Suit', 'Red Envelopes (Hongbao)', 'Vows', 'Rings (Double check with Groomsmen)', 'Cologne', 'Mints'],
+                    footer: "Don't Forget the Rings"
+                },
+                bridesmaids: {
+                    theme: 'blush', title: 'Bridesmaids',
+                    items: ['Bridesmaid Dresses', 'Tea Ceremony Outfits', 'Heels', 'Flats for later', 'Emergency kits'],
+                    footer: "Keep the bride hydrated"
+                },
+                groomsmen: {
+                    theme: 'charcoal', title: 'Groomsmen',
+                    items: ['Suits', 'Ties', 'Ensure you have the Rings (Mikey/Devan)', 'Help with Door Games', 'Speeches prepped'],
+                    footer: "Support the Groom"
+                }
+            }
+        };
+
+        const vendors = [
+            { role: 'Makeup and Hair', name: 'Captive By Ellie (2-3 MUA)', contact: '0424414862', email: '' },
+            { role: 'Photo & Video (Tea Ceremony)', name: 'Captured Frames (Adrian & Cyron)', contact: 'TBA', email: '' },
+            { role: 'Portraits, Ceremony & Reception Photos', name: 'Ann Marie Photography (+ 2nd Shooter)', contact: '0419417379', email: '' },
+            { role: 'Priest', name: 'Father Raymond', contact: 'TBA', email: '' },
+            { role: 'Violinist', name: 'Zoe Vrachnas', contact: 'TBA', email: '' },
+            { role: 'MC', name: 'Ned (Alvin\'s Friend)', contact: 'TBA', email: '' },
+            { role: 'DJ', name: 'Fave Events: DJ Jesse', contact: 'TBA', email: '' },
+            { role: 'Florist', name: 'Moon and Bloom (Janet - Jess\' SIL)', contact: '0434521725', email: '' },
+            { role: 'Transport (6 Hours)', name: 'Sydney Chauffeur Maxi (Sohel)', contact: '0422738954', email: '' },
+            { role: 'Venue Coordinator', name: 'Alpha Dining - Martha', contact: '0472769649', email: '' },
+            { role: 'Cake', name: 'Mastello Creations', contact: '', email: 'cake@mastellocreations.com.au' }
+        ];
+
+        const responsiblePeople = [
+            { role: 'Groom', name: 'Alvin', contact: '0479185638' },
+            { role: 'Bride', name: 'Sandra', contact: '0423683623' },
+            { role: 'Best Man', name: 'Mikey', contact: '0403146133' },
+            { role: 'Groomsman', name: 'Devan', contact: '0412024445' },
+            { role: 'Maid of Honor', name: 'Jess', contact: '0410945100' },
+            { role: 'Bridesmaid', name: 'Phoebe', contact: '0434410670' },
+            { role: 'Bride\'s Sister', name: 'Sandy', contact: '0413006895' },
+            { role: 'Groom\'s Sister', name: 'Coleen', contact: '0468675080' },
+            { role: 'MOH Slave', name: 'Tharinda', contact: '0434419762' }
+        ];
+
+        const events = [
+            {
+                id: 1, time: '3:00 AM', title: 'Wake Up', location: '9 Cloud Street, Schofields', responsible: ['Sandra', 'Bridesmaids'], teams: ['bride', 'bridesmaids', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Bridesmaids and Sandra wake up and prepare for makeup. (Everyone should have showered the day before following instructions from Ellie).' }
+                ]
+            },
+            {
+                id: 2, time: '3:45 AM', title: 'Make Up Artist Arrive', location: 'Cloud Street', responsible: ['Sandra', 'Captive by Ellie'], teams: ['bride'],
+                description: [
+                    { type: 'paragraph', text: 'Captivate by Ellie arrives and setups up. Early starters should have their make up and hair decided with photos if it helps.' },
+                    { type: 'checklist', items: ['Set up an area for HMU with clear space near natural light near a power point.', 'Sandy should be early for hair.'] }
+                ]
+            },
+            {
+                id: 3, time: '4:00 AM', title: 'Make up and Hair Begin', location: 'Cloud Street', responsible: ['Sandra', 'Bridesmaids', 'Parents', 'Sandy'], teams: ['bride', 'bridesmaids', 'moh'],
+                description: [
+                    { type: 'list', title: 'MUA 1 (Ellie?)', items: ['Jess Make up (MOH)', 'Sandra make up (BRIDE)', 'Sandra Hair', 'MOB Hair'] },
+                    { type: 'list', title: 'MUA 2 (TBC)', items: ['Phoebe Makeup', 'Sandy Makeup', 'MOB makeup', 'MOG make up'] },
+                    { type: 'list', title: 'MUA 3 (TBC)', items: ['Sandy Hair', 'Jess Hair', 'MOG Hair', 'Phoebe Hair'] },
+                    { type: 'paragraph', text: 'Notes: Parents should arrive around 6:30 in preparation for hair and make up.' }
+                ]
+            },
+            {
+                id: 4, time: '7:30 AM', title: 'Coffee Orders and Breakfast', location: 'Cloud Street', responsible: ['Alvin'], teams: ['groom', 'groomsmen'],
+                description: [
+                    { type: 'paragraph', text: 'Boys to get food and coffee orders for survival.' }
+                ]
+            },
+            {
+                id: 5, time: '8:00 AM', title: 'Tea Ceremony Setup and Prep', location: 'Cloud Street', responsible: ['Phoebe', 'Jess'], teams: ['bridesmaids', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Tea Ceremony Area to be prepared or finalised. Phoebe can start this after her hair is complete. Otherwise MOH and Sister to help if required.' },
+                    { type: 'checklist', items: ['Traditional Tea Set & Serving Tray', 'Hot water & Paper Tea Cups', 'Laptop with PDF ready for door games', 'Red Packs for the boys'] }
+                ]
+            },
+            {
+                id: 6, time: '8:30 AM', title: 'Videographer and Photography Arrive [TBC]', location: 'Cloud Street', responsible: ['Alvin', 'Jess'], teams: ['groom', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Captured Frames arrive for Video and Photography. Ensure a space for their equipment. Bridal party to start preparing to get into Chinese traditional outfits. Captured Frames will capture only photography for the Tea Ceremony.' }
+                ]
+            },
+            {
+                id: 7, time: '9:00 AM', title: 'Final Makeup and Hair touch ups', location: 'Cloud Street', responsible: ['MUA'], teams: ['bride', 'bridesmaids', 'groom', 'groomsmen'],
+                description: [
+                    { type: 'paragraph', text: 'Final touch ups for the bride and anyone else. Everyone should be dressed and ready for door games.' },
+                    { type: 'list', title: 'Notes', items: ['Captured Frames may capture final touches.', 'Families may start to arrive to attend the Tea Ceremony.', 'Groomsman should have arrived dressed and ready to go.', 'Parents may need to be pinned with their buttonholes.'] }
+                ]
+            },
+            {
+                id: 8, time: '9:30 AM', title: 'Tea Ceremony Door Games', location: 'Cloud Street', responsible: ['Phoebe'], teams: ['groom', 'groomsmen', 'bridesmaids'],
+                description: [
+                    { type: 'paragraph', text: 'Phoebe will facilitate the tea ceremony games. Boys will have Red Envelopes ready. [TBC] Boys will start outside the house and knock to begin. Games conclude at 9:50AM. The earlier the better.' },
+                    { type: 'list', title: 'Order of Games:', items: ['Pose Challenge: Groom party strike the pose for 30s. Pay red packets for extra time to look at photo.', 'Tea Bagging: Grooms party must repeatedly "dip" the tea bag via squats.', 'Guessing Game: Groom guesses the bride\'s features from options A to H. Punishment for wrong guesses.'] }
+                ],
+                links: [
+                    { text: 'Pose Challenge Link', url: 'https://drive.google.com/file/d/1ZID1Rt2CUqDNIUAZtWUcTnHwi_F-gAf9/view?usp=drive_link' },
+                    { text: 'Guessing Game Link', url: 'https://drive.google.com/file/d/1-olmJa9eSQR3Qj4LAjbqhEppjKUygJBF/view?usp=drive_link' }
+                ]
+            },
+            {
+                id: 9, time: '10:00 AM', title: 'Tea Ceremony', location: 'Cloud Street', responsible: ['Susan', 'Winnie'], teams: ['bride', 'groom', 'all'],
+                description: [
+                    { type: 'paragraph', text: 'Tea Ceremony will begin and Facilitated by Susan and Winnie. Light snacks and refreshments to be served.' },
+                    { type: 'list', title: 'Tea Serving Order:', items: ['Mum', 'Tito & Tita Menguito', 'Aunty / Uncle Yan', 'Aunty / Uncle Zhong', '5gou (Aunty 5)', 'YiHe (2He Aunty)'] },
+                    { type: 'list', title: 'Family Portraits:', items: ['Mum Zhong / Kevin / Sandy', 'Tita / Tito Menguito', 'Tita / Tito Menguito + Coleen', 'Aunty / Uncle Yan', 'Yan Family combined', '5gou', 'Aunty / Uncle Zhong', 'Zhong / Wu / Lam Family combined', 'Wu Family', 'Lam Family', 'Bridal party in chinese attire'] }
+                ]
+            },
+            {
+                id: 10, time: '11:30 AM', title: 'Dress Change', location: 'Cloud Street', responsible: ['Bridal Party'], teams: ['bride', 'bridesmaids', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Bridal Party to get changed! Everyone starts packing for what they need to bring to the ceremony/reception/checkin. Phoebe and Jess pack their things. Alvin should not be in sight to see Sandra.' }
+                ]
+            },
+            {
+                id: 11, time: '11:45 AM', title: 'First Looks', location: 'Cloud Street', responsible: ['Captured Frames'], teams: ['bride', 'groom'],
+                description: [
+                    { type: 'paragraph', text: 'Captured Frames will coordinate First look photos: Sandra\'s Parents, then Alvin. MUST AIM TO LEAVE BY 11:45AM.' }
+                ]
+            },
+            {
+                id: 12, time: '12:00 PM', title: 'Transit to Portrait location', location: 'Leave to Prefecture 48', responsible: ['Bridal Party', 'Sydney Chauffeur Maxi'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Leave to Prefecture 48 for portraits. Leave earlier if possible. Sydney Chauffeur Maxi will be picking up bridal party. Journey may take approx 1 hour.' },
+                    { type: 'checklist', items: ['Sandra\'s change of clothes + Shoes', 'Other ceremony and reception items', 'THE RINGS', 'Vows & Programs', 'Phoebe and Jess overnight bags', 'Flower Girl flowers (may need water)', 'Water and Snacks', 'Paper Tea Cup (for reception)', 'Photos for ceremony/reception'] }
+                ]
+            },
+            {
+                id: 13, time: '12:30 PM', title: 'Bridal Party Rest', location: 'On the road', responsible: ['Bridal Party'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Bridal party to rest, especially ladies. Keep hydrated.' }
+                ]
+            },
+            {
+                id: 14, time: '1:00 PM', title: 'Portraits with Ann Marie Photography', location: 'Prefecture 48', responsible: ['Ann Marie Photography'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Ann Marie Photography will cover photography for the remaining day. Portraits of Sandra, Alvin, and the Bridal Party.' },
+                    { type: 'list', title: 'Meanwhile at Alpha Dining (Bump In)', items: ['Moon and Bloom', 'DJ and Photobooth (Fave Events)', 'Signage setup'] }
+                ]
+            },
+            {
+                id: 15, time: '2:00 PM', title: 'Quick Lunch ? [TBC]', location: 'Prefecture 48', responsible: ['TBC'], teams: ['all'],
+                description: [
+                    { type: 'paragraph', text: 'Bridal party ensure they have a bit of food before the remainder of the day.' }
+                ]
+            },
+            {
+                id: 16, time: '2:30 PM', title: 'Transit to Church', location: 'Prefecture 48 to Church', responsible: ['Sydney Chauffeur Maxi'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Sydney Chauffeur will pick up bridal party in 11 seater fleet car. Ann Marie Photography (2) will join. Journey may take approx 30 mins.' }
+                ]
+            },
+            {
+                id: 17, time: '3:00 PM', title: 'Sandra & Alvin Private Vows', location: 'St Charles Borromeo Catholic Church [Location TBC]', responsible: ['Sandra', 'Alvin'], teams: ['bride', 'groom'],
+                description: [
+                    { type: 'paragraph', text: 'At the church, Sandra and Alvin will have their private vows. Ann Marie Photography, Captured Frames involved. If time permits, Jess will give Alvin an envelope to keep in his pocket. Bridal party on standby.' }
+                ]
+            },
+            {
+                id: 18, time: '3:30 PM', title: 'Sandra hides & guests arrive', location: 'St Charles Borromeo Catholic Church', responsible: ['Sandra', 'Tharinda', 'Jess'], teams: ['bride', 'moh', 'tp'],
+                description: [
+                    { type: 'paragraph', text: 'Sandra to be hidden in the Church (Location TBC). Guests start seating.' },
+                    { type: 'checklist', items: ['Jess and Phoebe hand bags to Tharinda/Kevin', 'Tharinda to hold white bridal emergency bag, camera, phone.'] }
+                ]
+            },
+            {
+                id: 19, time: '3:45 PM', title: 'Final Church Prep', location: 'St Charles Borromeo Catholic Church', responsible: ['Father Raymond', 'Alvin'], teams: ['groom', 'groomsmen', 'bridesmaids'],
+                description: [
+                    { type: 'checklist', items: ['Keep first row empty for Bridal Party', 'Grooms at the front', 'Guests seated', 'Bridesmaids and Flower Girls at the back with flowers.', 'Programs handed out', 'Rings with Devan/Mikey', 'Violinist ready', 'Seats for Bride and Groom setup'] }
+                ]
+            },
+            {
+                id: 20, time: '4:00 PM', title: 'Wedding Church Ceremony Starts', location: 'St Charles Borromeo Catholic Church (2a Charles St, Ryde)', responsible: ['Father Raymond', 'Zoe Vrachnas'], teams: ['all'],
+                description: [
+                    { type: 'list', title: 'Entry Order:', items: ['Flower Girls', 'Phoebe', 'Jess', 'Sandra\'s Mum and Brother with Sandra'] },
+                    { type: 'list', title: 'Ceremony Readings:', items: ['First Reading: Jena Barcelon', 'Prayers of the Faithful: Tharinda Perera'] },
+                    { type: 'list', title: 'Notes:', items: ['Flower girls and Bridesmaid enter to XX song; Sandra enters to different song.', 'Jess and Devan stand during signing of the register.', 'First kiss at end before walk out.', 'Bridal party give space for couple to wave back to guests.'] }
+                ]
+            },
+            {
+                id: 21, time: '5:00 PM', title: 'End of Ceremony Photos', location: 'St Charles Borromeo Catholic Church', responsible: ['Ann Marie Photography', 'Captured Frames'], teams: ['all'],
+                description: [
+                    { type: 'list', title: 'Starting Outside:', items: ['Group Photo', 'Combined Family Photo', 'Extended Zhong and Yan families', 'Sandra\'s Immediate Family'] },
+                    { type: 'list', title: 'Inside Photos:', items: ['Extended Menguito, Torres and Barvelon Families', 'Immediate Menguito Family'] },
+                    { type: 'checklist', items: ['Ensure Alvin and Sandra are hydrated', 'Family member to hold the wedding certificate'] }
+                ]
+            },
+            {
+                id: 22, time: '5:30 PM', title: 'Transit to Alpha Dining Reception', location: 'St Charles Borromeo to Alpha Dining', responsible: ['Sydney Chauffeur Maxi'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Bridal party and Ann Marie to leave for reception via Sydney Chauffeur. Ideally leave earlier/ASAP. Journey approx 1 hour.' }
+                ]
+            },
+            {
+                id: 23, time: '6:30 PM', title: 'Pre-guest arrival pictures + Cocktail hour', location: 'Alpha Dining - The Gallery (238 Castlereagh St)', responsible: ['Ann Marie Photography', 'Captured Frames'], teams: ['bride', 'groom'],
+                description: [
+                    { type: 'paragraph', text: 'If time permits, Pre-guest arrival photos of details (Signage, Wishing well, Guest book, Tables, Florals). Note: Bustle dress if Sandra does not want a train.' }
+                ]
+            },
+            {
+                id: 24, time: '6:55 PM', title: 'Cocktail hour ends', location: 'Alpha Dining', responsible: ['MC Ned'], teams: ['mc_ned', 'all'],
+                description: [
+                    { type: 'paragraph', text: 'MC Ned starts asking guests to get seated for the 7PM start. Guests look at the draping for seat numbers.' }
+                ]
+            },
+            {
+                id: 25, time: '7:00 PM', title: 'Reception Begins', location: 'Alpha Dining', responsible: ['MC Ned'], teams: ['mc_ned', 'all'],
+                description: [
+                    { type: 'paragraph', text: 'Ned welcomes everyone, covers housekeeping, mentions photobooth/guestbook, builds hype. Introduces groups: Groomsmen, Bridesmaids (entering with trays of shots for guests), and Couple. Concludes with entree and speech mentions.' }
+                ]
+            },
+            {
+                id: 26, time: '7:15 PM', title: 'Entrees Served', location: 'Alpha Dining', responsible: ['Alpha Dining'], teams: ['all'],
+                description: [
+                    { type: 'paragraph', text: 'Ensure the bride and groom eat a bit.' }
+                ]
+            },
+            {
+                id: 27, time: '7:30 PM', title: 'Speeches Begin', location: 'Alpha Dining', responsible: ['MC Ned'], teams: ['mc_ned', 'moh', 'groomsmen'],
+                description: [
+                    { type: 'paragraph', text: 'MC Ned introduces the following for speeches (approx 2.5 mins each):' },
+                    { type: 'list', title: '', items: ['Jess (Maid of Honor)', 'Mikey and Devan (Groomsmen)'] }
+                ]
+            },
+            {
+                id: 28, time: '7:45 PM', title: 'Photo Blitz Session 1', location: 'Alpha Dining', responsible: ['MC Ned', 'Ann Marie Photography'], teams: ['mc_ned', 'all'],
+                description: [
+                    { type: 'list', title: 'Order of Photos (To the Stage):', items: ['Menguito Family (5)', 'Torres Family (5)', 'Barcelon Family (8)', 'Alvin Family Combined (18)', 'Zhong Family (10)'] }
+                ]
+            },
+            {
+                id: 29, time: '8:00 PM', title: 'Speeches Continue', location: 'Alpha Dining', responsible: ['MC Ned'], teams: ['mc_ned', 'all'],
+                description: [
+                    { type: 'paragraph', text: 'MC Ned introduces the family members for speeches:' },
+                    { type: 'list', title: '', items: ['8:05 PM: Kevin (Sandra\'s Brother)', '8:10 PM: Alvin\'s Parents (Eugene and Regina)'] }
+                ]
+            },
+            {
+                id: 30, time: '8:15 PM', title: 'Main Served', location: 'Alpha Dining', responsible: ['Alpha Dining'], teams: ['all'],
+                description: [
+                    { type: 'paragraph', text: 'Ideally Crew meals are served at the same time as the bridal party. [TBC] Game once to start.' }
+                ]
+            },
+            {
+                id: 31, time: '8:30 PM', title: 'Bride and Groom Speech + Cake Cut', location: 'Alpha Dining', responsible: ['Alvin', 'Sandra', 'MC Ned'], teams: ['bride', 'groom', 'mc_ned'],
+                description: [
+                    { type: 'paragraph', text: 'MC Ned introduces the newlyweds and their speech, followed by the cake cutting.' }
+                ]
+            },
+            {
+                id: 32, time: '8:45 PM', title: 'Photo Blitz Session 2', location: 'Alpha Dining', responsible: ['MC Ned', 'Ann Marie Photography'], teams: ['mc_ned', 'all'],
+                description: [
+                    { type: 'paragraph', text: 'Note: It may be chaotic to get everyone together. Note there is a dress change at some point.' },
+                    { type: 'list', title: 'Order of Photos:', items: ['Yan Family (15)', 'Sandra Family Combined', 'Zhong Family (5)', 'Wu Family (4)', 'Lam Family (4)', 'Alvin High School Friends (10)', 'Alvin & Sandra Uni Friends (12)', 'Alvin Work Colleagues (8)', 'Sandra Ceerose Colleagues (5)', 'Sandra Cessleigh Colleagues (6)'] }
+                ]
+            },
+            {
+                id: 33, time: '9:15 PM', title: 'Dessert Served and Dress Change [TBC]', location: 'Alpha Dining', responsible: ['Alpha Dining', 'Sandra'], teams: ['bride', 'all'],
+                description: [
+                    { type: 'paragraph', text: 'Alpha Dining serves dessert. [TBC] Sandra to do a dress change.' }
+                ]
+            },
+            {
+                id: 34, time: '9:30 PM', title: 'First Dance', location: 'Alpha Dining', responsible: ['MC Ned', 'Alvin', 'Sandra'], teams: ['bride', 'groom', 'mc_ned'],
+                description: [
+                    { type: 'paragraph', text: 'MC Ned to announce Alvin and Sandra\'s First Dance.' }
+                ]
+            },
+            {
+                id: 35, time: '9:45 PM', title: 'Dance Floor Opens!', location: 'Alpha Dining', responsible: ['DJ Jesse'], teams: ['all', 'bride', 'groom', 'bridesmaids', 'groomsmen'],
+                description: [
+                    { type: 'paragraph', text: 'Guests are welcome to the dance floor opened by DJ Jesse. Bridal party to help bring hype to the dance floor. [TBC] Photo Blitz 3 to bring a large group to the dance floor.' }
+                ]
+            },
+            {
+                id: 36, time: '11:45 PM', title: 'Party Over', location: 'Alpha Dining', responsible: ['Alpha Dining'], teams: ['all'],
+                description: [
+                    { type: 'paragraph', text: 'TBC Newlywed Send Off (eg. Last Song). Bump Out begins. All items must be collected, nothing can be collected the following day.' },
+                    { type: 'checklist', items: ['Signs', 'Drapes', 'Flowers', 'Guest Book', 'Wishing Well'] }
+                ]
+            }
+        ];
+
+        const THEMES = {
+            custom: {
+                bg: 'bg-burgundy-900',                                       
+                text: 'text-cream',                              
+                light: 'bg-burgundy-800',                                   
+                border: 'border-burgundy-600/40',
+                accent: 'bg-cream text-burgundy-900 border-cream',    
+                accentText: 'text-cream',
+                fill: 'fill-burgundy-700',
+                overlay: 'bg-burgundy-950',
+                pinkText: 'text-cream',
+                pinkAccent: 'bg-burgundy-800 text-cream border-burgundy-600',
+            }
+        };
+        const activeTheme = THEMES[CONFIG.theme];
+
+        const MODAL_THEMES = {
+            burgundy: { bg: '#451d29', text: 'text-cream', title: 'text-cream', btn: 'bg-burgundy-700 hover:bg-burgundy-600 text-cream border border-burgundy-600', iconBg: 'bg-burgundy-800 shadow-sm', iconColor: 'text-cream fill-burgundy-700', signoff: 'text-burgundy-200', border: 'border-burgundy-700', checkBg: 'bg-burgundy-800', checkBorder: 'border-burgundy-500 group-hover:border-cream', checkFill: 'bg-cream border-cream text-burgundy-900', checkedText: 'text-burgundy-300 line-through', progressBg: 'bg-burgundy-700', progressFill: 'bg-cream' },
+            cream: { bg: 'bg-[#FDFBF7]', text: 'text-[#453F38]', title: 'text-[#241F1C]', btn: 'bg-white hover:bg-[#F4ECE1] text-[#453F38] border border-[#E7DBC9]', iconBg: 'bg-white shadow-sm', iconColor: 'text-[#622b3a] fill-[#FBE6EB]', signoff: 'text-[#7D7261]', border: 'border-[#E7DBC9]', checkBg: 'bg-white', checkBorder: 'border-[#D3C3AB] group-hover:border-[#622b3a]', checkFill: 'bg-[#622b3a] border-[#622b3a] text-white', checkedText: 'text-[#A99A85] line-through', progressBg: 'bg-[#E7DBC9]', progressFill: 'bg-[#622b3a]' },
+            blush: { bg: 'bg-[#F1C9D2]', text: 'text-[#5C323D]', title: 'text-[#241F1C]', btn: 'bg-white/70 hover:bg-white text-[#5C323D] border border-[#622b3a]/40', iconBg: 'bg-white', iconColor: 'text-[#622b3a] fill-[#FBE6EB]', signoff: 'text-[#8E3A4A]', border: 'border-[#622b3a]/40', checkBg: 'bg-white/70', checkBorder: 'border-[#622b3a]/50 group-hover:border-[#622b3a]', checkFill: 'bg-[#8E3A4A] border-[#8E3A4A] text-white', checkedText: 'text-[#A96274] line-through', progressBg: 'bg-white/60', progressFill: 'bg-[#8E3A4A]' },
+            dark: { bg: 'bg-[#1a1a1a]', text: 'text-stone-300', title: 'text-white', btn: 'bg-stone-800 hover:bg-stone-700 text-white', iconBg: 'bg-stone-800', iconColor: 'text-stone-400 fill-stone-800', signoff: 'text-stone-500', border: 'border-stone-700', checkBg: 'bg-stone-800/60', checkBorder: 'border-stone-600 group-hover:border-stone-400', checkFill: 'bg-stone-400 border-stone-400 text-black', checkedText: 'text-stone-600 line-through', progressBg: 'bg-stone-800', progressFill: 'bg-stone-400' },
+            charcoal: { bg: 'bg-[#17130F]', text: 'text-[#D3C3AB]', title: 'text-white', btn: 'bg-[#332F2B] hover:bg-[#453F38] text-white', iconBg: 'bg-[#332F2B]', iconColor: 'text-[#8CA37C] fill-[#332F2B]', signoff: 'text-[#7D7261]', border: 'border-[#332F2B]', checkBg: 'bg-[#332F2B]/50', checkBorder: 'border-[#5D5447] group-hover:border-[#8CA37C]', checkFill: 'bg-[#8e5161] border-[#8e5161] text-white', checkedText: 'text-[#5D5447] line-through', progressBg: 'bg-[#332F2B]', progressFill: 'bg-[#8e5161]' }
+        };
+
+        const Icons = {
+            ChevronDown: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m6 9 6 6 6-6"/></svg>,
+            ChevronUp: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m18 15-6-6-6 6"/></svg>,
+            Heart: ({ className, fillClass, onClick }) => <svg onClick={onClick} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`${className} ${fillClass}`}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+            Clock: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+            Search: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+            X: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>,
+            Check: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 6 9 17 4 12"></polyline></svg>,
+            User: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+            MapPin: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
+            ExternalLink: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+            ArrowRight: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
+            ArrowLeft: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>,
+            ArrowUp: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m18 15-6-6-6 6"/><path d="M12 9v15"/></svg>,
+            Phone: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
+            Mail: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
+            Info: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>,
+            Lock: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        };
+
+        const PinScreen = ({ onAccess }) => {
+            const [pin, setPin] = useState('');
+            const [error, setError] = useState(false);
+            const [isUnlocking, setIsUnlocking] = useState(false);
+
+            const handleKeyPress = (num) => { if (pin.length < 4) setPin(prev => prev + num); };
+            const handleClear = () => setPin('');
+            const handleEnter = () => {
+                if (pin === CONFIG.pinCode) {
+                    localStorage.setItem('weddingAuth_' + CONFIG.pinCode, 'true');
+                    setIsUnlocking(true);
+                    setTimeout(() => onAccess(), 600);
+                } else {
+                    setError(true);
+                    setTimeout(() => { setPin(''); setError(false); }, 400);
+                }
+            };
+
+            return (
+                <div className={`min-h-screen flex flex-col items-center justify-center px-4 ${activeTheme.bg} transition-all duration-700 ease-in-out ${isUnlocking ? 'opacity-0 scale-110 blur-sm pointer-events-none' : 'opacity-100 scale-100'}`}>
+                    <div className="text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                        <Icons.Lock className="w-8 h-8 mx-auto mb-6 text-cream opacity-70" />
+                        <h1 className={`text-4xl sm:text-5xl font-serif mb-3 ${activeTheme.pinkText}`}>{CONFIG.coupleNames}</h1>
+                        <p className="text-burgundy-200 font-light tracking-wide">{CONFIG.displayDate}</p>
+                        <p className="text-burgundy-300 font-light text-sm mt-1">{CONFIG.weddingLocation}</p>
+                    </div>
+                    
+                    <div className={`flex justify-center gap-4 mb-8 h-4 transition-transform duration-300 ${error ? 'animate-shake' : ''}`}>
+                        {[0, 1, 2, 3].map(i => <div key={i} className={`w-4 h-4 rounded-full border-2 transition-all duration-200 ${pin.length > i ? 'bg-cream border-cream scale-110' : 'border-burgundy-300 bg-transparent'}`} />)}
+                    </div>
+                    {error && <p className="text-rose-400 text-sm font-medium absolute mt-[-20px] transition-opacity">Incorrect PIN</p>}
+
+                    <div className="grid grid-cols-3 gap-4 sm:gap-6 max-w-[280px] w-full mx-auto mt-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150">
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => <button key={num} onClick={() => handleKeyPress(num)} className={`aspect-square rounded-full bg-burgundy-800 shadow-sm text-2xl font-light text-cream active:bg-burgundy-700 active:scale-95 transition-all hover:shadow-md flex items-center justify-center`}>{num}</button>)}
+                        <button onClick={handleClear} className="aspect-square rounded-full text-burgundy-300 font-medium active:bg-burgundy-800 active:scale-95 transition-all flex items-center justify-center text-sm uppercase tracking-wider">Clear</button>
+                        <button onClick={() => handleKeyPress(0)} className={`aspect-square rounded-full bg-burgundy-800 shadow-sm text-2xl font-light text-cream active:bg-burgundy-700 active:scale-95 transition-all hover:shadow-md flex items-center justify-center`}>0</button>
+                        <button onClick={handleEnter} className={`aspect-square rounded-full ${activeTheme.accent} shadow-md active:opacity-80 active:scale-95 transition-all flex items-center justify-center`}><Icons.ArrowRight className="w-8 h-8" /></button>
+                    </div>
+                    <div className="mt-8 text-burgundy-400 text-xs font-mono">PIN is: {CONFIG.pinCode}</div>
+                </div>
+            );
+        };
+
+        const HelpfulLinksModal = ({ onClose }) => (
+            <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4 animate-in fade-in">
+                <div className="bg-cream rounded-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto shadow-2xl animate-in slide-in-from-bottom-8 text-burgundy-900">
+                    <div className={`bg-burgundy-100 px-6 py-4 flex justify-between items-center border-b border-burgundy-200 sticky top-0 z-10`}>
+                        <h3 className={`font-serif text-xl`}>Info & Links</h3>
+                        <button onClick={onClose} className="p-1 rounded-full hover:bg-black/10 transition"><Icons.X className={`w-5 h-5`} /></button>
+                    </div>
+                    <div className="p-6 space-y-6">
+                        
+                        <div>
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-burgundy-600 mb-3">How to use this app</h4>
+                            <ul className="space-y-4 text-sm text-burgundy-800">
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-0.5"><Icons.ArrowRight className="w-4 h-4 text-burgundy-400" /></div>
+                                    <span><strong>Swipe the header</strong> left or right — or tap <strong>Contacts</strong> in the top bar — to switch between the Timeline and the Directory.</span>
+                                </li>
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-0.5"><Icons.Search className="w-4 h-4 text-burgundy-400" /></div>
+                                    <span><strong>Search & Filter</strong> to find specific events or view only what matters to you.</span>
+                                </li>
+                                <li className="flex gap-3 items-start">
+                                    <div className="mt-0.5"><Icons.Heart className="w-4 h-4 text-rose-500" fillClass="fill-rose-200" /></div>
+                                    <span><strong>Secret Checklists:</strong> Tap a filter role (like Bride, MOH, TP) 3 times fast to unlock your hidden checklist!</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {CONFIG.helpfulLinks && CONFIG.helpfulLinks.length > 0 && (
+                            <div className="pt-2 border-t border-burgundy-100">
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-burgundy-600 mb-3">Helpful Links</h4>
+                                <div className="space-y-2">
+                                    {CONFIG.helpfulLinks.map((link, i) => (
+                                        <a key={i} href={link.url} target="_blank" className={`flex items-center gap-3 p-4 rounded-xl border border-burgundy-200 hover:bg-burgundy-50 transition-colors group`}>
+                                            <Icons.ExternalLink className={`w-5 h-5 text-burgundy-600 opacity-70 group-hover:opacity-100`} />
+                                            <span className="font-medium">{link.title}</span>
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const ChecklistModal = ({ data, onClose }) => {
+            const theme = MODAL_THEMES[data.theme] || MODAL_THEMES.cream;
+            const initialItems = data.items ? data.items.map((item, idx) => ({ id: idx, text: item, checked: false })) : [];
+            const [items, setItems] = useState(initialItems);
+            
+            const toggleItem = (id) => setItems(items.map(item => item.id === id ? { ...item, checked: !item.checked } : item));
+            const progress = items.length > 0 ? Math.round((items.filter(i => i.checked).length / items.length) * 100) : 0;
+
+            const bgClass = data.theme === 'burgundy' ? theme.bg : `bg-[${theme.bg.replace('bg-[', '').replace(']', '')}]`;
+
+            return (
+                <div className={`fixed inset-0 z-[100] overflow-y-auto animate-in fade-in duration-300`} style={{ backgroundColor: theme.bg.includes('#') && !theme.bg.startsWith('bg-') ? theme.bg : undefined }} className={theme.bg.startsWith('bg-') ? `${theme.bg} fixed inset-0 z-[100] overflow-y-auto animate-in fade-in duration-300` : `fixed inset-0 z-[100] overflow-y-auto animate-in fade-in duration-300 bg-[${theme.bg}]`}>
+                    <button onClick={onClose} className={`fixed top-6 right-6 z-[110] p-2 rounded-full transition-colors shadow-sm ${theme.btn}`}><Icons.X className="w-6 h-6" /></button>
+                    
+                    <div className="max-w-2xl mx-auto p-6 pt-12 min-h-screen flex flex-col">
+                        <div className="flex justify-between items-start mb-6 pr-12">
+                            <div>
+                                <h2 className={`text-4xl font-serif mb-1 ${theme.title}`}>{data.title}</h2>
+                                <p className={`${theme.signoff} font-mono text-sm tracking-widest uppercase`}>Checklist</p>
+                            </div>
+                        </div>
+
+                        <div className={`sticky top-0 z-30 pb-6 pt-2 mb-2 border-b ${theme.border}`} style={{ backgroundColor: theme.bg.includes('#') && !theme.bg.startsWith('bg-') ? theme.bg : undefined }}>
+                            <div className={`flex justify-between text-xs font-mono mb-2 uppercase tracking-wider ${theme.signoff}`}>
+                                <span>{progress === 100 ? "Ready!" : "Readiness"}</span>
+                                <span>{progress}%</span>
+                            </div>
+                            <div className={`h-1 ${theme.progressBg} rounded-full overflow-hidden`}><div className={`h-full ${theme.progressFill} transition-all duration-500 ease-out`} style={{ width: `${progress}%` }}></div></div>
+                        </div>
+
+                        <div className="space-y-3 py-4 flex-1">
+                            {items.map(item => (
+                                <label key={item.id} className={`group flex items-center p-4 border rounded-xl cursor-pointer transition-all ${theme.checkBg} ${theme.border} hover:shadow-sm`}>
+                                    <input type="checkbox" className="hidden custom-checkbox" checked={item.checked} onChange={() => toggleItem(item.id)} />
+                                    <div className={`w-6 h-6 border-2 rounded-md flex items-center justify-center mr-4 transition-colors ${theme.checkBorder} ${item.checked ? theme.checkFill : ''}`}>
+                                        <Icons.Check className={`w-4 h-4 ${item.checked ? 'block' : 'hidden'}`} />
+                                    </div>
+                                    <span className={`text-lg font-light tracking-wide transition-colors ${item.checked ? theme.checkedText : theme.text}`}>{item.text}</span>
+                                </label>
+                            ))}
+                        </div>
+
+                        <div className="mt-8 text-center pb-8 flex flex-col items-center">
+                            {data.footer && <p className={`${theme.signoff} text-xs font-mono uppercase tracking-[0.2em] mb-6`}>{data.footer}</p>}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const WeddingTimeline = () => {
+            const [expandedEvents, setExpandedEvents] = useState([]);
+            const [selectedFilters, setSelectedFilters] = useState(['all']);
+            const [searchQuery, setSearchQuery] = useState('');
+            const [expandAll, setExpandAll] = useState(false);
+            
+            const [showFilters, setShowFilters] = useState(false);
+            const [showLinks, setShowLinks] = useState(false);
+            const [activeChecklist, setActiveChecklist] = useState(null); 
+            const [filterClicks, setFilterClicks] = useState({ id: null, count: 0 }); 
+            
+            const [view, setView] = useState('timeline'); 
+            const [directoryTab, setDirectoryTab] = useState('vendors');
+            const [isScrolled, setIsScrolled] = useState(false);
+
+            const timelineScrollRef = useRef(null); 
+
+            const handleTimelineScroll = (e) => {
+                const scrollTop = e.currentTarget.scrollTop;
+                if (scrollTop > 100 && !isScrolled) setIsScrolled(true);
+                else if (scrollTop <= 100 && isScrolled) setIsScrolled(false);
+            };
+
+            const [touchStart, setTouchStart] = useState(null);
+            const [touchEnd, setTouchEnd] = useState(null);
+            const minSwipeDistance = 50;
+            
+            const onTouchStart = (e) => { setTouchEnd(null); setTouchStart(e.targetTouches[0].clientX); };
+            const onTouchMove = (e) => { setTouchEnd(e.targetTouches[0].clientX); };
+            const onTouchEnd = () => {
+                if (!touchStart || !touchEnd) return;
+                const distance = touchStart - touchEnd;
+                if (distance > minSwipeDistance) {
+                    if (view === 'timeline') setView('vendors');
+                }
+                if (distance < -minSwipeDistance) {
+                    if (view === 'vendors') setView('timeline');
+                }
+            };
+
+            const scrollToTop = () => {
+                if (timelineScrollRef.current) timelineScrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const renderDescriptionContent = (desc) => {
+                if (!desc) return null;
+                if (typeof desc === 'string') return <p className="text-cream/90 mt-4 leading-relaxed">{desc}</p>;
+                if (Array.isArray(desc)) {
+                    if (typeof desc[0] === 'object') {
+                        return (
+                            <div className="mt-4 space-y-4">
+                                {desc.map((section, idx) => {
+                                    if (section.type === 'paragraph' || section.type === 'text') return <p key={idx} className="text-cream/90 leading-relaxed">{section.text}</p>;
+                                    if (section.type === 'list') return <div key={idx}>{section.title && <p className="text-sm font-semibold uppercase tracking-wide text-burgundy-200 mb-1.5">{section.title}</p>}<ul className="text-cream/90 leading-relaxed list-none space-y-1.5 pl-1">{section.items.map((line, i) => <li key={i} className="flex items-start gap-2.5"><span className="w-1.5 h-1.5 rounded-full bg-cream shrink-0 mt-2"></span><span>{line}</span></li>)}</ul></div>;
+                                    if (section.type === 'checklist') return <div key={idx} className={`space-y-2 bg-burgundy-900/50 p-3 rounded-lg border border-burgundy-700`} onClick={e => e.stopPropagation()}>{section.items.map((item, i) => <label key={i} className="flex items-center gap-3 cursor-pointer group"><input type="checkbox" className="peer sr-only" /><span className="w-5 h-5 border-2 border-burgundy-400 rounded bg-burgundy-800 flex items-center justify-center shrink-0 peer-checked:bg-cream peer-checked:border-cream transition-colors"><Icons.Check className="w-3.5 h-3.5 text-burgundy-900" /></span><span className="text-sm text-cream/90 group-hover:text-cream peer-checked:text-burgundy-300 peer-checked:line-through transition-colors select-none">{item}</span></label>)}</div>;
+                                    return null;
+                                })}
+                            </div>
+                        );
+                    }
+                }
+                return null;
+            };
+
+            const filteredEvents = events.filter(event => {
+                const teamMatch = selectedFilters.includes('all') || event.teams.includes('all') || event.teams.some(team => selectedFilters.includes(team));
+                const searchTextMatches = (text) => text.toLowerCase().includes(searchQuery.toLowerCase());
+                let descMatch = false;
+                if (typeof event.description === 'string') descMatch = searchTextMatches(event.description);
+                else if (Array.isArray(event.description)) descMatch = event.description.some(item => typeof item === 'string' ? searchTextMatches(item) : (item.text && searchTextMatches(item.text)) || (item.items && item.items.some(i => searchTextMatches(i))));
+                const searchMatch = searchQuery === '' || searchTextMatches(event.title) || descMatch || searchTextMatches(event.location) || searchTextMatches(event.time) || (event.responsible && event.responsible.some(r => searchTextMatches(r)));
+                return teamMatch && searchMatch;
+            });
+
+            const toggleFilter = (filterId) => {
+                let clicks = 1;
+                if (filterClicks.id === filterId) {
+                    clicks = filterClicks.count + 1;
+                }
+                setFilterClicks({ id: filterId, count: clicks });
+
+                if (CONFIG.checklists[filterId] && clicks >= 3) {
+                    setActiveChecklist(filterId);
+                    setFilterClicks({ id: null, count: 0 }); 
+                    return; 
+                }
+
+                if (filterId === 'all') { 
+                    setSelectedFilters(['all']); 
+                    setFilterClicks({ id: null, count: 0 });
+                } else {
+                    setSelectedFilters(prev => {
+                        const clean = prev.filter(f => f !== 'all');
+                        const isSelected = clean.includes(filterId);
+                        if (isSelected) { 
+                            if (CONFIG.checklists[filterId] && clicks === 2) return prev; 
+                            const updated = clean.filter(f => f !== filterId); 
+                            return updated.length === 0 ? ['all'] : updated; 
+                        } else { 
+                            return [...clean, filterId]; 
+                        }
+                    });
+                }
+            };
+
+            const toggleEvent = (id) => {
+                if (expandAll) return;
+                setExpandedEvents(prev => prev.includes(id) ? prev.filter(e => e !== id) : [...prev, id]);
+            };
+            
+            const toggleExpandAll = () => { 
+                if (expandAll) { setExpandAll(false); setExpandedEvents([]); } 
+                else { setExpandAll(true); setExpandedEvents(filteredEvents.map(e => e.id)); }
+            };
+
+            const translation = view === 'timeline' ? '0' : '50';
+
+            return (
+                <div className={`overflow-x-hidden w-full relative min-h-screen ${activeTheme.bg}`}>
+                    {activeChecklist && <ChecklistModal data={CONFIG.checklists[activeChecklist]} onClose={() => setActiveChecklist(null)} />}
+                    {showLinks && <HelpfulLinksModal onClose={() => setShowLinks(false)} />}
+
+                    <div className="hidden md:block fixed top-1/2 left-8 z-50 transform -translate-y-1/2">
+                        {view === 'vendors' && <button onClick={() => setView('timeline')} className="bg-burgundy-800 shadow-lg p-4 rounded-full hover:bg-burgundy-700 transition-all hover:scale-110 border border-burgundy-600"><Icons.ArrowLeft className="w-6 h-6 text-cream" /></button>}
+                    </div>
+                    <div className="hidden md:block fixed top-1/2 right-8 z-50 transform -translate-y-1/2">
+                        {view === 'timeline' && <button onClick={() => setView('vendors')} className="bg-burgundy-800 shadow-lg p-4 rounded-full hover:bg-burgundy-700 transition-all hover:scale-110 border border-burgundy-600"><Icons.ArrowRight className="w-6 h-6 text-cream" /></button>}
+                    </div>
+
+                    <div className={`flex w-[200%] transition-transform duration-500 ease-in-out h-[100dvh]`} style={{ transform: `translateX(-${translation}%)` }}>
+                        
+                        {/* --- VIEW 1: TIMELINE --- */}
+                        <div ref={timelineScrollRef} onScroll={handleTimelineScroll} className={`w-1/2 shrink-0 relative z-20 h-[100dvh] overflow-y-auto ${activeTheme.bg}`}>
+                            
+                            <header className="w-full bg-burgundy-950 px-4 py-8 text-center select-none flex flex-col items-center justify-center border-b border-burgundy-800" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+                                <div className="w-full flex justify-center pb-6 md:hidden"><div className="w-12 h-1.5 bg-burgundy-700 rounded-full"></div></div>
+                                <h1 className={`text-4xl font-serif mb-2 text-cream`}>{CONFIG.coupleNames}</h1>
+                                <p className="text-burgundy-200 font-light tracking-wide">{CONFIG.displayDate}</p>
+                                <p className="text-burgundy-300 font-light text-sm mt-1">{CONFIG.weddingLocation}</p>
+                            </header>
+
+                            <div className="sticky top-0 z-50 w-full bg-burgundy-900/95 backdrop-blur shadow-sm border-b border-burgundy-800 transition-all duration-300" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+                                <div className="max-w-4xl mx-auto px-4 w-full">
+                                    <div className="flex items-center justify-between w-full py-4">
+                                        <button onClick={scrollToTop} className={`pr-4 pl-2 text-burgundy-300 hover:text-cream transition-opacity duration-300 md:hidden ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                                            <Icons.ArrowUp className="w-5 h-5" />
+                                        </button>
+
+                                        <button onClick={() => { if(isScrolled) scrollToTop(); setShowFilters(!showFilters); }} className={`flex-1 flex items-center justify-center gap-2 text-cream/80 hover:text-cream transition-colors`}>
+                                            <Icons.Search className="w-4 h-4" /><span className="font-serif text-sm uppercase tracking-wider">Search & Filters</span>
+                                            {showFilters ? <Icons.ChevronUp className="w-4 h-4" /> : <Icons.ChevronDown className="w-4 h-4" />}
+                                        </button>
+                                        
+                                        <div className="w-px h-6 bg-burgundy-700 mx-2"></div>
+                                        <button onClick={() => setView('vendors')} className={`flex items-center gap-2 text-cream/80 hover:text-cream px-2 transition-colors`}>
+                                            <Icons.User className="w-5 h-5" /><span className="hidden sm:inline font-serif text-sm uppercase tracking-wider">Contacts</span>
+                                        </button>
+                                        <div className="w-px h-6 bg-burgundy-700 mx-2"></div>
+                                        <button onClick={() => setShowLinks(true)} className={`flex items-center gap-2 text-cream/80 hover:text-cream pl-2`}>
+                                            <Icons.Info className="w-5 h-5" />
+                                        </button>
+                                    </div>
+
+                                    {showFilters && (
+                                        <div className="pb-6 animate-in slide-in-from-top-2 border-t border-burgundy-800 pt-4">
+                                            <div className="mb-4">
+                                                <input type="text" placeholder="Search events, locations..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-burgundy-700 focus:border-cream outline-none bg-burgundy-950 text-cream placeholder-burgundy-400"/>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2 justify-center">
+                                                {CONFIG.filters.map(filter => {
+                                                    const isSelected = selectedFilters.includes(filter.id);
+                                                    const selectedClass = activeTheme.accent;
+                                                    return (
+                                                        <button key={filter.id} onClick={() => toggleFilter(filter.id)} className={`px-4 py-2 rounded-full text-sm font-medium tracking-wide transition-all flex items-center gap-1.5 ${isSelected ? selectedClass : `bg-burgundy-800 text-cream hover:bg-burgundy-700`}`}>
+                                                            {filter.label}
+                                                        </button>
+                                                    );
+                                                })}
+                                                <div className="w-px h-6 bg-burgundy-700 mx-2 mt-1"></div>
+                                                <button onClick={toggleExpandAll} className={`px-4 py-2 rounded-full text-sm font-medium tracking-wide bg-transparent border border-burgundy-500 text-cream hover:bg-burgundy-800`}>{expandAll ? 'Collapse All' : 'Expand All'}</button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="w-full relative pb-32">
+                                <div className="max-w-3xl mx-auto w-full px-4 pt-4 relative">
+                                    <div className="absolute left-[3.5rem] top-4 bottom-0 w-px bg-burgundy-700 z-0"></div>
+                                    
+                                    <div className="space-y-6">
+                                        {filteredEvents.map((event, index) => {
+                                            const isExpanded = expandAll || expandedEvents.includes(event.id);
+                                            
+                                            return (
+                                                <div key={event.id} className={`relative z-10 transition-all duration-300 ease-in-out`}>
+                                                    {isExpanded ? (
+                                                        <div className="flex flex-col w-full py-2 fade-in-up">
+                                                            <div className="flex justify-center mb-4">
+                                                                <span className={`time-pill whitespace-nowrap px-3 py-1.5 rounded-lg text-sm font-medium shadow-sm bg-cream text-burgundy-900`}>{event.time}</span>
+                                                            </div>
+                                                            <div className="bg-burgundy-800 rounded-xl shadow-xl border border-burgundy-600 overflow-hidden w-full">
+                                                                <button onClick={() => toggleEvent(event.id)} className="w-full px-6 py-5 text-left flex items-center justify-between bg-transparent outline-none">
+                                                                    <div className="flex-1 pr-4">
+                                                                        <h3 className={`text-xl font-serif mb-2 text-cream`}>{event.title}</h3>
+                                                                        <div className="flex flex-col gap-2">
+                                                                            <span className={`inline-flex items-center gap-1.5 text-sm text-burgundy-200 font-light`}>
+                                                                                <Icons.MapPin className="w-3.5 h-3.5" />
+                                                                                {event.location}
+                                                                            </span>
+                                                                            {event.responsible && (
+                                                                                <div className="flex items-center gap-1.5 text-xs text-burgundy-300 font-medium uppercase tracking-wide">
+                                                                                    <Icons.User className="w-3.5 h-3.5" />
+                                                                                    {event.responsible.join(', ')}
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                    <Icons.ChevronUp className="w-5 h-5 text-burgundy-400 shrink-0" />
+                                                                </button>
+                                                                <div className="px-6 pb-6 border-t border-burgundy-700">
+                                                                    {renderDescriptionContent(event.description)}
+                                                                    <div className="mt-5 flex flex-wrap gap-2">{event.teams.map(team => (<span key={team} className={`px-3 py-1 bg-burgundy-900 text-burgundy-100 text-xs rounded-full border border-burgundy-700`}>{CONFIG.filters.find(f => f.id === team)?.label || team}</span>))}</div>
+                                                                    {event.links && event.links.length > 0 && (
+                                                                        <div className="mt-4 space-y-2">
+                                                                            {event.links.map((link, idx) => (
+                                                                                <a key={idx} href={link.url} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 text-cream text-sm underline-offset-4 hover:underline transition-colors`}><Icons.ExternalLink className="w-4 h-4" />{link.text}</a>
+                                                                            ))}
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex items-start w-full relative pl-[5.75rem] sm:pl-[7.5rem]">
+                                                            <div className="absolute left-0 w-[5.25rem] sm:w-28 flex justify-center mt-1">
+                                                                <span className={`time-pill whitespace-nowrap px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium shadow-sm transition-all bg-burgundy-800 border border-burgundy-600 text-cream`}>{event.time}</span>
+                                                            </div>
+                                                            <button onClick={() => toggleEvent(event.id)} className={`bg-burgundy-800 rounded-xl border border-burgundy-600 transition-all duration-300 ease-in-out w-full shadow-sm hover:bg-burgundy-700 px-6 py-5 text-left flex items-center justify-between outline-none`}>
+                                                                <div className="flex-1 pr-2 sm:pr-4 min-w-0">
+                                                                    <h3 className={`text-lg sm:text-xl font-serif mb-2 text-cream`}>{event.title}</h3>
+                                                                    <div className="flex flex-col gap-2">
+                                                                        <span className={`inline-flex items-start gap-1.5 text-sm text-burgundy-200 font-light`}>
+                                                                            <Icons.MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                                                                            <span className="break-words">{event.location}</span>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <Icons.ChevronDown className="w-5 h-5 text-burgundy-400 shrink-0" />
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                                <footer className="mt-8 border-t border-burgundy-800 w-full max-w-4xl mx-auto">
+                                    <div className="px-4 py-12 text-center">
+                                        <p className="text-burgundy-300 font-light text-sm">{CONFIG.footerMessage}</p>
+                                        <p className="text-burgundy-400 font-serif italic text-sm mt-4">{CONFIG.footerSignoff}</p>
+                                    </div>
+                                </footer>
+                            </div>
+                        </div>
+
+                        {/* --- VIEW 2: DIRECTORY (RIGHT) --- */}
+                        <div className={`w-1/2 shrink-0 h-[100dvh] overflow-y-auto relative bg-burgundy-950 flex flex-col`}>
+                            <div className="bg-burgundy-900/95 backdrop-blur border-b border-burgundy-800 sticky top-0 z-50 shrink-0" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+                                <div className="w-full flex justify-center pt-3 md:hidden"><div className="w-12 h-1.5 bg-burgundy-700 rounded-full"></div></div>
+                                <div className="max-w-3xl mx-auto px-6 py-6 pt-4 text-center select-none relative">
+                                    <button onClick={() => setView('timeline')} className="absolute left-6 top-5 p-2 text-burgundy-300 hover:text-cream md:hidden">
+                                        <Icons.ArrowLeft className="w-6 h-6" />
+                                    </button>
+                                    <h2 className={`text-3xl font-serif mb-1 text-cream`}>Directory</h2>
+                                    <p className="text-burgundy-200 text-sm font-light">Key contacts for the big day.</p>
+                                </div>
+                                <div className="max-w-3xl mx-auto flex justify-center pb-0 space-x-2">
+                                    <button onClick={() => setDirectoryTab('vendors')} className={`px-4 py-3 font-serif text-sm transition-colors ${directoryTab === 'vendors' ? `border-b-2 border-cream text-cream` : 'text-burgundy-400 hover:text-burgundy-200'}`}>Vendors</button>
+                                    <button onClick={() => setDirectoryTab('responsible')} className={`px-4 py-3 font-serif text-sm transition-colors ${directoryTab === 'responsible' ? `border-b-2 border-cream text-cream` : 'text-burgundy-400 hover:text-burgundy-200'}`}>Bridal Party</button>
+                                </div>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto w-full">
+                                <div className="max-w-3xl mx-auto w-full px-4 py-8">
+                                    {directoryTab === 'responsible' && (
+                                        <div className="bg-burgundy-900 rounded-2xl shadow-sm border border-burgundy-700 overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+                                            <div className="divide-y divide-burgundy-800">
+                                                {responsiblePeople.map((person, idx) => (
+                                                    <div key={idx} className="p-5 flex items-center justify-between hover:bg-burgundy-800 transition-colors">
+                                                        <div>
+                                                            <p className="text-xs font-bold uppercase tracking-widest text-burgundy-400 mb-1">{person.role}</p>
+                                                            <h3 className={`text-base font-medium text-cream`}>{person.name}</h3>
+                                                        </div>
+                                                        <a href={`tel:${person.contact}`} className={`flex items-center justify-center gap-2 bg-cream text-burgundy-900 w-10 h-10 rounded-full hover:opacity-90 transition-colors`}><Icons.Phone className="w-4 h-4" /></a>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {directoryTab === 'vendors' && (
+                                        <div className="bg-burgundy-900 rounded-2xl shadow-sm border border-burgundy-700 overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+                                            <div className="divide-y divide-burgundy-800">
+                                                {vendors.map((vendor, idx) => (
+                                                    <div key={idx} className="p-5 flex flex-col sm:flex-row gap-4 sm:items-center justify-between hover:bg-burgundy-800 transition-colors">
+                                                        <div>
+                                                            <p className="text-xs font-bold uppercase tracking-widest text-burgundy-400 mb-1">{vendor.role}</p>
+                                                            <h3 className={`text-base font-medium text-cream`}>{vendor.name}</h3>
+                                                        </div>
+                                                        <div className="flex gap-2">
+                                                            {vendor.email && (
+                                                                <a href={`mailto:${vendor.email}`} className={`flex items-center justify-center gap-2 border border-burgundy-500 text-cream w-10 h-10 rounded-full hover:bg-burgundy-700 transition-colors`}><Icons.Mail className="w-4 h-4" /></a>
+                                                            )}
+                                                            {vendor.contact && vendor.contact !== 'TBA' && vendor.contact !== '' ? (
+                                                                <a href={`tel:${vendor.contact.replace(/\s+/g, '')}`} className={`flex items-center gap-2 bg-cream text-burgundy-900 px-4 h-10 rounded-full text-sm font-medium hover:opacity-90 transition-colors`}><Icons.Phone className="w-4 h-4" /><span>Call</span></a>
+                                                            ) : (
+                                                                <span className="text-xs text-burgundy-400 font-mono bg-burgundy-950 px-3 h-10 rounded-full flex items-center">TBA</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className="mt-12 text-center pb-12"><button onClick={() => setView('timeline')} className="text-burgundy-400 hover:text-cream text-sm flex items-center justify-center gap-2 mx-auto transition-colors"><Icons.ArrowLeft className="w-4 h-4" />Back to Timeline</button></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+            useEffect(() => {
+                if (localStorage.getItem('weddingAuth_' + CONFIG.pinCode) === 'true') {
+                    setIsAuthenticated(true);
+                }
+            }, []);
+
+            if (!isAuthenticated) return <PinScreen onAccess={() => setIsAuthenticated(true)} />;
+            return <div className="animate-in fade-in zoom-in-95 duration-500 ease-out"><WeddingTimeline /></div>;
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
