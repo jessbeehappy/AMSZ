@@ -93,7 +93,7 @@
                 bride: {
                     theme: 'ivory', title: 'The Bride',
                     items: [
-                        'Wedding Dress & Reception Dress (TBC)',
+                        'Wedding Dress & Reception Dress',
                         'Tea Ceremony Outfit',
                         'Veil',
                         'Wedding Heels & Comfortable Flats',
@@ -141,7 +141,7 @@
                         'Essential Makeup/Touch Up + Contacts',
                         'Skin Care and Day before prep',
                         'Bridal Emergency Bag (White bag)',
-                        'Floral Tools Bag (Thorn ripper, gloves, floral tape, pins, thread, ribbon)',
+                        'Floral Tools Bag (Thorn ripper, gloves, floral tape, safety pins, thread, ribbon)',
                         'Toothbrush',
                         'Printed Maid of Honor Speech',
                         'Charging cable and portable chargers (x2)',
@@ -188,48 +188,58 @@
                     theme: 'dark', title: 'Tharinda (TP)',
                     items: [
                         'Overnight Bag + Car Essentials',
-                        'Water bottles (Church back up)',
+                        'Water bottles (Church backup)',
                         'Gummies (Sugar so no one passes out)',
                         'Light snacks (healthy chips, protein bars)',
-                        'Overnight clothes + Jess extra clothes',
+                        'Overnight clothes + Jess extra clothes (pink bag)',
                         'Wedding outfit (Suit + Shoes)',
                         'Printed Prayers of the Faithful',
-                        'Extra portable Charger',
-                        'Korean Pear Drink (Lidcombe centre or Woolies)',
-                        'Wishing well card with money!',
-                        'Grace Hotel booked',
-                        'City parking booked for Friday overnight stay',
-                        'Jumper x2 (one for Jess)'
+                        'Extra portable charger (purple)',
+                        'Korean Pear Drink (Lidcombe Centre or Woolies)',
+                        'Wishing well card with money (card on table)',
+                        'Grace Hotel booked (also under your name)',
+                        'Book city parking for Friday overnight stay',
+                        'Jumper x2 (one for Jess already in pink bag — leave in car)',
+                        'Arrive at church by 3:30 PM sharp (Jess may hand you her bag from bridal car)'
                     ],
                     footer: "The MOH Slave"
                 }
             }
         };
 
+        const mapUrlFor = (location) => {
+            const l = (location || '').toLowerCase();
+            if (l.includes('cloud street') || l.includes('schofields')) return 'https://share.google/YSc4tNDmGF2ohvxk3';
+            if (l.includes('charles') || l.includes('ryde')) return 'https://share.google/5kTwu0Mf43GN0jCQG';
+            if (l.includes('alpha') || l.includes('castlereagh')) return 'https://share.google/LvJ6TY6Ns2kJpFOP0';
+            if (l.includes('on the road')) return null;
+            return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
+        };
+
         const vendors = [
-            { role: 'Makeup & Hair', name: 'Captive By Ellie', contact: '0424414862', notes: '2-3 MUA & Hair artists' },
-            { role: 'Photography (Portraits, Ceremony, Reception)', name: 'Ann Marie Photography', contact: '0419417379', notes: 'Ann Marie + 2nd Shooter' },
+            { role: 'Makeup & Hair', name: 'Captivate By Ellie', contact: '+61424414862', notes: '2-3 MUA & Hair artists | captivatebyellie.com.au' },
+            { role: 'Photography (Portraits, Ceremony, Reception)', name: 'Ann Marie Photography', contact: '+61419417379', notes: 'Ann Marie + 2nd Shooter' },
             { role: 'Video & Tea Ceremony Photo', name: 'Captured Frames', contact: 'TBA', notes: 'Adrian (Video) & Cyron (Tea Ceremony Photos)' },
             { role: 'Priest', name: 'Father Raymond', contact: 'TBA', notes: 'St Charles Borromeo' },
             { role: 'Violinist', name: 'Zoe Vrachnas', contact: 'TBA', notes: 'Ceremony music' },
             { role: 'MC', name: 'Ned', contact: 'TBA', notes: 'Alvin Friend' },
             { role: 'DJ & Photobooth', name: 'Fave Events (DJ Jesse)', contact: 'TBA', notes: 'Alpha Dining' },
-            { role: 'Florist', name: 'Moon and Bloom (Janet)', contact: '0434521725', notes: 'Jess SIL' },
-            { role: 'Transport', name: 'Sydney Chauffeur Maxi (Sohel)', contact: '0422738954', notes: '11-seater booked for 6 hours' },
-            { role: 'Venue Coordinator', name: 'Martha', contact: '0472769649', notes: 'Alpha Dining - The Gallery' },
+            { role: 'Florist', name: 'Moon and Bloom (Janet)', contact: '+61434521725', notes: 'Jess SIL' },
+            { role: 'Transport', name: 'Sydney Chauffeur Maxi (Sohel)', contact: '+61422738954', notes: '11-seater booked for 6 hours' },
+            { role: 'Venue Coordinator', name: 'Martha', contact: '+61472769649', notes: 'Alpha Dining - The Gallery' },
             { role: 'Cake', name: 'Mastello Creations', email: 'cake@mastellocreations.com.au', notes: '' }
         ];
 
         const responsiblePeople = [
-            { role: 'Bride', name: 'Sandra', contact: '0423683623', notes: '' },
-            { role: 'Groom', name: 'Alvin', contact: '0479185638', notes: '' },
-            { role: 'Maid of Honor', name: 'Jess', contact: '0410945100', notes: 'University Friend' },
-            { role: 'Best Man', name: 'Mikey', contact: '0403146133', notes: 'High School Friend' },
-            { role: 'Groomsman', name: 'Devan', contact: '0412024445', notes: 'High School Friend' },
-            { role: 'Bridesmaid', name: 'Phoebe', contact: '0434410670', notes: 'Door Games Lead' },
-            { role: 'Bride Sister', name: 'Sandy', contact: '0413006895', notes: 'Early hair slot' },
-            { role: 'Groom Sister', name: 'Coleen', contact: '0468675080', notes: '' },
-            { role: 'MOH Support', name: 'Tharinda', contact: '0434419762', notes: 'MOH Slave & Prayers of the Faithful' }
+            { role: 'Bride', name: 'Sandra', contact: '+61423683623', notes: '' },
+            { role: 'Groom', name: 'Alvin', contact: '+61479185638', notes: '' },
+            { role: 'Maid of Honor', name: 'Jess', contact: '+61410945100', notes: 'University Friend' },
+            { role: 'Best Man', name: 'Mikey', contact: '+61403146133', notes: 'High School Friend' },
+            { role: 'Groomsman', name: 'Devan', contact: '+61412024445', notes: 'High School Friend' },
+            { role: 'Bridesmaid', name: 'Phoebe', contact: '+61434410670', notes: 'Door Games Lead' },
+            { role: 'Bride Sister', name: 'Sandy', contact: '+61413006895', notes: 'Early hair slot' },
+            { role: 'Groom Sister', name: 'Coleen', contact: '+61468675080', notes: '' },
+            { role: 'MOH Support', name: 'Tharinda', contact: '+61434419762', notes: 'MOH Slave & Prayers of the Faithful' }
         ];
 
         // ============================================================================
@@ -237,53 +247,65 @@
         // ============================================================================
         const events = [
             {
-                id: 1, time: '3:00 AM', title: 'Wake Up', location: '9 Cloud Street, Schofields', responsible: ['Bridesmaids', 'Sandra'], teams: ['bride', 'bridesmaids', 'moh'],
-                description: 'Bridesmaids and Sandra wake up and prepare for makeup. Everyone should have showered the day before following Ellie prep instructions.'
+                id: 1, time: '3:00 AM', title: 'Wake Up & HMU Prep', location: '9 Cloud Street, Schofields', responsible: ['Bridesmaids', 'Sandra'], teams: ['bride', 'bridesmaids', 'moh'],
+                description: [
+                    { type: 'paragraph', text: 'Bridesmaids and Sandra wake up and prepare for hair and makeup.' },
+                    { type: 'list', title: 'Captivate by Ellie Prep Rules', items: [
+                        'Face: Clean & moisturised (no makeup, tinted moisturiser, sunscreen, or snail mucin). Bride: no lash lifts, perms, or extensions.',
+                        'Hair: Clean & 100% dry (shampoo 2-3x, condition mid-lengths/ends only, no leave-in oils/conditioner, do not sleep on damp hair).',
+                        'Clothes: Wear getting-ready robes or a button-up/singlet top easy to remove without messing up hair/makeup.',
+                        'Inspo: Have 2-3 hair & makeup photos ready on your phone.'
+                    ] }
+                ]
             },
             {
-                id: 2, time: '3:45 AM', title: 'Make Up Artist Arrives', location: '9 Cloud Street, Schofields', responsible: ['Sandra'], teams: ['bride', 'bridesmaids', 'moh'],
+                id: 2, time: '3:45 AM', title: 'Make Up Artist Arrives', location: '9 Cloud Street, Schofields', responsible: ['Sandra', 'Captivate By Ellie'], teams: ['bride', 'bridesmaids', 'moh'],
                 description: [
-                    { type: 'paragraph', text: 'Captivate by Ellie arrives and sets up. Early starters should have hair/makeup inspo photos ready.' },
-                    { type: 'checklist', items: ['Clear HMU space near natural light & power point', 'Sandy ready early for hair'] }
+                    { type: 'paragraph', text: 'Captivate by Ellie arrives and sets up. Keep children and pets clear of hot tools.' },
+                    { type: 'checklist', items: ['Clear HMU space near natural light & power point', '2 normal chairs per artist + dining table for tools', 'Sandy ready early for hair'] }
                 ]
             },
             {
                 id: 3, time: '4:00 AM', title: 'Make Up & Hair Begin (4:00 - 8:30 AM)', location: '9 Cloud Street, Schofields', responsible: ['Sandra', 'Bridesmaids', 'Parents', 'Sister'], teams: ['bride', 'bridesmaids', 'moh'],
                 description: [
-                    { type: 'list', title: 'Order of HMU', items: ['MUA 1 (Ellie): Jess Makeup -> Sandra Makeup -> Sandra Hair -> MOB Hair', 'MUA 2 (TBC): Phoebe Makeup -> Sandy Makeup -> MOB Makeup -> MOG Makeup', 'MUA 3 (TBC): Sandy Hair -> Jess Hair -> MOG Hair -> Phoebe Hair'] },
+                    { type: 'list', title: 'Order of HMU', items: [
+                        'MUA 1 (Ellie): Jess Makeup -> Sandra Makeup -> Sandra Hair -> MOB Hair',
+                        'MUA 2 (TBC): Phoebe Makeup -> Sandy Makeup -> MOB Makeup -> MOG Makeup',
+                        'MUA 3 (TBC): Sandy Hair -> Jess Hair -> MOG Hair -> Phoebe Hair'
+                    ] },
                     { type: 'paragraph', text: 'Note: Parents should arrive around 6:30 AM for hair and makeup.' }
                 ]
             },
             {
                 id: 4, time: '7:30 AM', title: 'Coffee Orders & Breakfast', location: '9 Cloud Street, Schofields', responsible: ['Alvin'], teams: ['groom', 'groomsmen'],
-                description: 'Boys to pick up coffee and breakfast orders for survival.'
+                description: 'Boys pick up coffee and breakfast orders for survival.'
             },
             {
-                id: 5, time: '8:00 AM', title: 'Tea Ceremony Setup & Prep', location: '9 Cloud Street, Schofields', responsible: ['Phoebe', 'Jess'], teams: ['bridesmaids', 'moh'],
+                id: 5, time: '8:00 AM', title: 'Tea Ceremony Prep & Florals Arrive', location: '9 Cloud Street, Schofields', responsible: ['Phoebe', 'Jess', 'Moon and Bloom'], teams: ['bridesmaids', 'moh'],
                 description: [
-                    { type: 'paragraph', text: 'Phoebe starts setup after her hair is done (MOH & Sister to assist if needed).' },
+                    { type: 'paragraph', text: 'Moon and Bloom delivers florals to Schofields. Phoebe begins Tea Ceremony setup after her hair is done (MOH & Sister to assist if needed).' },
                     { type: 'checklist', items: ['Traditional Tea Set & Serving Tray', 'Hot water ready & Paper Tea Cups', 'Laptop with Door Games PDFs ready', 'Red Packets (Hongbao) for the boys'] }
                 ]
             },
             {
-                id: 6, time: '8:30 AM', title: 'Photo & Video Arrive [TBC]', location: '9 Cloud Street, Schofields', responsible: ['Alvin', 'Jess'], teams: ['bride', 'groom', 'moh', 'bridesmaids', 'groomsmen'],
-                description: 'Captured Frames (Adrian & Cyron) arrive. Clear a space for gear. Bridal party begins changing into Chinese traditional outfits. Note: Captured Frames covers photography for the Tea Ceremony only.'
+                id: 6, time: '8:30 AM', title: 'Photo & Video Arrive (Not Confirmed)', location: '9 Cloud Street, Schofields', responsible: ['Alvin', 'Jess'], teams: ['bride', 'groom', 'moh', 'bridesmaids', 'groomsmen'],
+                description: 'Captured Frames (Adrian & Cyron) arrive. Clear space for gear. Bridal party begins changing into Chinese traditional outfits. Note: Captured Frames covers photography for the Tea Ceremony only.'
             },
             {
-                id: 7, time: '9:00 AM', title: 'Final HMU Touch Ups', location: '9 Cloud Street, Schofields', responsible: ['MUA'], teams: ['bride', 'bridesmaids', 'moh', 'groom', 'groomsmen'],
+                id: 7, time: '9:00 AM', title: 'Final HMU Touch Ups', location: '9 Cloud Street, Schofields', responsible: ['Captivate By Ellie'], teams: ['bride', 'bridesmaids', 'moh', 'groom', 'groomsmen'],
                 description: [
-                    { type: 'paragraph', text: 'Final touch ups for Sandra and bridal party. Everyone dressed and ready for door games.' },
+                    { type: 'paragraph', text: 'Final touch-ups for Sandra and bridal party. Everyone dressed and ready for door games.' },
                     { type: 'checklist', items: ['Captured Frames filming final touches', 'Families arriving for Tea Ceremony', 'Groomsmen arrived & dressed', 'Parents pinned with buttonholes'] }
                 ]
             },
             {
                 id: 8, time: '9:30 AM', title: 'Tea Ceremony Door Games', location: '9 Cloud Street, Schofields', responsible: ['Phoebe'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
                 description: [
-                    { type: 'paragraph', text: 'Facilitated by Phoebe. Boys start outside with Red Envelopes ready and knock to begin. Must conclude by 9:50 AM (earlier the better).' },
+                    { type: 'paragraph', text: 'Facilitated by Phoebe. Boys start outside with Red Envelopes (Hongbao) ready and knock to begin. Must conclude by 9:50 AM (earlier the better).' },
                     { type: 'list', title: 'Order of Games', items: [
-                        '1. Pose Challenge: 10s to view pic (1 red packet = +10s), hold pose for 30s.',
-                        '2. Tea Bagging: Boys dip tea bag / perform squats until tea brews to target color.',
-                        '3. Guessing Game: 8 cropped features (A-H), only 1 is Sandra. Pay red packet for hints; wrong = punishment.'
+                        '1. Pose Challenge: 10s to view pic (1 red packet = +10s), then hold pose for at least 30s.',
+                        '2. Tea Bagging: Boys repeatedly dip tea bag / perform squats until tea brews to target color.',
+                        '3. Guessing Game: 8 cropped features (A-H), only 1 belongs to Sandra. Pay red packet for easier options; wrong answer = punishment.'
                     ] }
                 ],
                 links: [
@@ -294,7 +316,7 @@
             {
                 id: 9, time: '10:00 AM', title: 'Tea Ceremony & Family Portraits', location: '9 Cloud Street, Schofields', responsible: ['Susan', 'Winnie'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
                 description: [
-                    { type: 'paragraph', text: 'Facilitated by Susan & Winnie. Light snacks and refreshments served.' },
+                    { type: 'paragraph', text: 'Facilitated by Susan & Winnie (10:00 AM - 11:00 AM). Light snacks and refreshments served.' },
                     { type: 'list', title: 'Tea Serving Order', items: ['Mum', 'Tito & Tita Menguito', 'Aunty / Uncle Yan', 'Aunty / Uncle Zhong', '5gou (Aunty 5)', 'YiHe (2He Aunty)'] },
                     { type: 'list', title: 'Family Portraits Order', items: ['Mum Zhong / Kevin / Sandy', 'Tita / Tito Menguito', 'Tita / Tito Menguito + Coleen', 'Aunty / Uncle Yan', 'Yan Family combined', '5gou', 'Aunty / Uncle Zhong', 'Zhong / Wu / Lam Family combined', 'Wu Family', 'Lam Family', 'Bridal party in Chinese attire'] }
                 ]
@@ -304,24 +326,24 @@
                 description: 'Bridal party changes into wedding attire (11:30 - 11:40 AM) and packs overnight/ceremony bags. Keep Alvin out of sight so he does not see Sandra.'
             },
             {
-                id: 11, time: '11:45 AM', title: 'First Looks', location: '9 Cloud Street, Schofields', responsible: ['Captured Frames'], teams: ['bride', 'groom', 'moh'],
-                description: 'Captured Frames coordinates First Look photos: 1) Sandra Parents, 2) Alvin. Quick touch-ups if needed.'
+                id: 11, time: '11:45 AM', title: 'First Looks (Aim to Leave ASAP)', location: '9 Cloud Street, Schofields', responsible: ['Captured Frames'], teams: ['bride', 'groom', 'moh'],
+                description: 'Captured Frames coordinates First Look photos: 1) Sandra Parents, 2) Alvin. Quick touch-ups if needed. MUST aim to leave by 11:45 AM - 12:00 PM.'
             },
             {
                 id: 12, time: '12:00 PM', title: 'Transit to Portrait Location', location: 'Prefecture 48', responsible: ['Bridal Party', 'Sydney Chauffeur Maxi'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh', 'tp'],
                 description: [
                     { type: 'paragraph', text: 'Sydney Chauffeur Maxi picks up bridal party for Prefecture 48 (leave earlier if possible; ~1 hr drive).' },
-                    { type: 'checklist', items: ['THE RINGS (with Groom / Groomsmen)', 'Printed Vows & Speeches', 'Sandra change of clothes + Shoes', 'Ceremony & reception items + Wedding Programs', 'Phoebe & Jess overnight bags', 'Flower Girl flowers (check water)', 'Snacks & Paper Tea Cups (for reception)', 'Loved ones photos'] }
+                    { type: 'checklist', items: ['THE RINGS (with Groom / Groomsmen)', 'Printed Vows & Speeches', 'Sandra change of clothes + Shoes', 'Ceremony & reception items + Wedding Programs', 'Phoebe & Jess overnight bags', 'Flower Girl flowers (check water)', 'Water, Snacks & Paper Tea Cups (for reception)', 'Photos for ceremony/reception'] }
                 ]
             },
             {
                 id: 13, time: '12:30 PM', title: 'Bridal Party Rest', location: 'On the road', responsible: ['Bridal Party'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
-                description: 'Rest in the van, especially the ladies. Hydrate and grab a quick snack.'
+                description: 'Rest in the van, especially the ladies. Keep hydrated and grab a quick snack.'
             },
             {
-                id: 14, time: '1:00 PM', title: 'Portraits with Ann Marie Photography', location: 'Prefecture 48', responsible: ['Ann Marie Photography'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
+                id: 14, time: '1:00 PM', title: 'Portraits & Alpha Dining Bump-In', location: 'Prefecture 48', responsible: ['Ann Marie Photography'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
                 description: [
-                    { type: 'paragraph', text: 'Ann Marie Photography takes over photography for the rest of the day.' },
+                    { type: 'paragraph', text: 'Ann Marie Photography takes over photography for the remainder of the day.' },
                     { type: 'list', title: 'Portrait Order', items: ['Sandra & Alvin', 'Bridal Party'] },
                     { type: 'list', title: 'Simultaneous Alpha Dining Bump-In', items: ['Moon and Bloom (Florist)', 'Fave Events (DJ & Photobooth)', 'Signage setup'] }
                 ]
@@ -360,11 +382,11 @@
                 ]
             },
             {
-                id: 21, time: '4:45 PM', title: 'End of Ceremony Photos', location: 'St Charles Borromeo Catholic Church', responsible: ['Ann Marie Photography', 'Captured Frames'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
+                id: 21, time: '5:00 PM', title: 'End of Ceremony Photos', location: 'St Charles Borromeo Catholic Church', responsible: ['Ann Marie Photography', 'Captured Frames'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
                 description: [
                     { type: 'list', title: 'Outside Church', items: ['Everyone Group Photo', 'Combined Family Photo', 'Extended Zhong & Yan Families (Sandra side)', 'Sandra Immediate Family (Mum, Kevin, Sandy)'] },
                     { type: 'list', title: 'Inside Church (Altar)', items: ['Extended Menguito, Torres & Barcelon Families', 'Immediate Menguito Family (Mum, Dad, Coleen + Jette)'] },
-                    { type: 'paragraph', text: 'Guests begin heading to Alpha Dining. Keep Alvin & Sandra hydrated.' }
+                    { type: 'checklist', items: ['Keep Alvin & Sandra hydrated', 'Hand official wedding certificate to a designated family member'] }
                 ]
             },
             {
@@ -372,15 +394,15 @@
                 description: 'Bridal party and Ann Marie depart for Alpha Dining (leave earlier / ASAP; ~1 hr drive).'
             },
             {
-                id: 23, time: '6:30 PM', title: 'Pre-Guest Arrival Photos & Cocktail Hour', location: 'Alpha Dining - The Gallery', responsible: ['Ann Marie Photography', 'Captured Frames', 'MC Ned'], teams: ['bride', 'groom', 'moh', 'mc_ned'],
+                id: 23, time: '6:30 PM', title: 'Pre-Guest Photos & Cocktail Hour', location: 'Alpha Dining - The Gallery', responsible: ['Ann Marie Photography', 'Captured Frames', 'MC Ned'], teams: ['bride', 'groom', 'moh', 'mc_ned'],
                 description: [
-                    { type: 'paragraph', text: 'Cocktail hour begins. Ann Marie & Captured Frames capture reception details before guests enter.' },
-                    { type: 'list', title: 'Detail Shots', items: ['Welcome & Guest Table Signage', 'Wishing Well & Guest Book', 'Tables & Florals'] }
+                    { type: 'paragraph', text: 'Aim to arrive early before Cocktail Hour starts. Ann Marie & Captured Frames capture reception details (Welcome & Table Signage, Wishing Well, Guest Book, Tables, Florals).' },
+                    { type: 'checklist', items: ['Bustle Sandra dress if she does not want a train', 'MC Ned checks in with Martha (Venue Coordinator) for sound check'] }
                 ]
             },
             {
                 id: 24, time: '6:55 PM', title: 'Cocktail Hour Ends (Seating Call)', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned'], teams: ['mc_ned', 'all'],
-                description: 'MC Ned asks guests to check the draping for seat numbers and get seated for the 7:00 PM start. (Assign someone to help guests struggling to find their names).'
+                description: 'MC Ned asks guests to check the draping for seat numbers and get seated for the 7:00 PM start. (Have someone assist guests struggling to find their names).'
             },
             {
                 id: 25, time: '7:00 PM', title: 'Reception Begins & Entrances', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned'], teams: ['bride', 'groom', 'bridesmaids', 'groomsmen', 'moh', 'mc_ned'],
@@ -388,66 +410,72 @@
                     { type: 'list', title: 'MC Ned Opening Checklist', items: [
                         'Welcome everyone & introduce himself',
                         'Housekeeping: bathrooms, smoking area, evacuation areas',
-                        'Call out photobooth timings, guest book & wishing well',
+                        'Call out photobooth timings, guest book, wishing well & games',
                         'Build hype (napkin swinging / practice cheers)',
-                        'Entrances: Groomsmen -> Bridesmaids (entering with trays of shots for guests) -> Alvin & Sandra',
+                        '[7:05 PM] Entrances: Groomsmen -> Bridesmaids (entering with trays of shots for guests) -> Alvin & Sandra',
+                        'First Dance Song Sweepstake: Guests guess the First Dance song and write their name on the board next to the DJ',
                         'Wrap up by announcing entrees and that speeches follow shortly'
                     ] }
                 ]
             },
             {
                 id: 26, time: '7:15 PM', title: 'Entrees Served', location: 'Alpha Dining - The Gallery', responsible: ['Alpha Dining'], teams: ['all', 'mc_ned'],
-                description: 'Alpha Dining serves entrees. Make sure Alvin & Sandra actually eat!'
+                description: 'Alpha Dining serves entrees. Make sure Alvin & Sandra eat!'
             },
             {
                 id: 27, time: '7:30 PM', title: 'Speeches — Part 1', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned'], teams: ['all', 'mc_ned', 'moh', 'groomsmen'],
                 description: [
-                    { type: 'paragraph', text: 'MC Ned introduces bridal party speeches (approx. 2.5 mins each, printed copies ready):' },
+                    { type: 'paragraph', text: 'MC Ned introduces bridal party speeches (approx. 2.5 mins each):' },
                     { type: 'list', items: ['Jess (Maid of Honor) — University Friend', 'Mikey & Devan (Groomsmen) — High School Friends'] }
                 ]
             },
             {
-                id: 28, time: '8:00 PM', title: 'Mains Served', location: 'Alpha Dining - The Gallery', responsible: ['Alpha Dining'], teams: ['all', 'mc_ned'],
-                description: 'Alpha Dining serves mains. Ideally crew/vendor meals are served at the same time as the bridal party. [TBC] Game.'
+                id: 28, time: '7:45 PM', title: 'Photo Blitz', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned', 'Ann Marie Photography', 'Captured Frames'], teams: ['bride', 'groom', 'mc_ned'],
+                description: [
+                    { type: 'paragraph', text: 'MC Ned calls groups to the stage and queues the next group in advance (Ann Marie & Captured Frames present):' },
+                    { type: 'list', items: [
+                        'Menguito Family (5)', 'Torres Family (5)', 'Barcelon Family (8)', 'Alvin Family Combined (18)',
+                        'Zhong Family (10)', 'Yan Family (15)', 'Sandra Family Combined', 'Zhong Family (5)',
+                        'Wu Family (4)', 'Lam Family (4)', 'Alvin High School Friends (10)', 'Alvin & Sandra Uni Friends (12)',
+                        'Alvin Work Colleagues (8)', 'Sandra Ceerose Colleagues (5)', 'Sandra Cessleigh Colleagues (6)'
+                    ] }
+                ]
             },
             {
-                id: 29, time: '8:20 PM', title: 'Speeches — Part 2 (Family)', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned'], teams: ['all', 'mc_ned'],
+                id: 29, time: '8:00 PM', title: 'Speeches — Part 2 (Family)', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned'], teams: ['all', 'mc_ned'],
                 description: [
                     { type: 'paragraph', text: 'MC Ned introduces family speeches (approx. 2.5 mins each):' },
-                    { type: 'list', items: ['Kevin — Sandra Brother', 'Eugene & Regina — Alvin Parents'] }
+                    { type: 'list', items: ['[8:05 PM] Kevin — Sandra Brother', '[8:10 PM] Eugene & Regina — Alvin Parents'] }
                 ]
             },
             {
-                id: 30, time: '8:40 PM', title: 'Photo Blitz', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned', 'Ann Marie Photography', 'Captured Frames'], teams: ['bride', 'groom', 'mc_ned'],
-                description: [
-                    { type: 'paragraph', text: 'MC Ned calls each family group to the stage (ensure Ann Marie & Captured Frames are ready):' },
-                    { type: 'list', items: ['Menguito Family (5)', 'Torres Family (5)', 'Barcelon Family (8)', 'Alvin Family Combined (18)', 'Zhong Family (10)'] }
-                ]
+                id: 30, time: '8:15 PM', title: 'Mains Served', location: 'Alpha Dining - The Gallery', responsible: ['Alpha Dining'], teams: ['all', 'mc_ned'],
+                description: 'Alpha Dining serves mains. Ideally crew/vendor meals are served at the same time as the bridal party.'
             },
             {
-                id: 31, time: '9:00 PM', title: 'Bride & Groom Speech + Cake Cut', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned', 'Alvin', 'Sandra'], teams: ['bride', 'groom', 'mc_ned'],
+                id: 31, time: '8:30 PM', title: 'Bride & Groom Speech + Cake Cut', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned', 'Alvin', 'Sandra'], teams: ['bride', 'groom', 'mc_ned'],
                 description: 'MC Ned introduces Alvin & Sandra for their speech, followed directly by the Cake Cutting.'
             },
             {
-                id: 32, time: '9:15 PM', title: 'Dessert Served & Dress Change [TBC]', location: 'Alpha Dining - The Gallery', responsible: ['Alpha Dining'], teams: ['bride', 'moh', 'mc_ned'],
-                description: 'Alpha Dining serves dessert. Sandra does her dress change [TBC].'
+                id: 32, time: '9:00 PM', title: 'Dessert Served & Dress Change', location: 'Alpha Dining - The Gallery', responsible: ['Alpha Dining'], teams: ['bride', 'moh', 'mc_ned'],
+                description: 'Alpha Dining serves dessert. Sandra does her dress change.'
             },
             {
-                id: 33, time: '9:30 PM', title: 'First Dance', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned', 'Alvin', 'Sandra'], teams: ['bride', 'groom', 'mc_ned'],
-                description: 'MC Ned announces Alvin & Sandra First Dance. Confirm Ann Marie Photography & Captured Frames are in position.'
+                id: 33, time: '9:15 PM', title: 'First Dance', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned', 'Alvin', 'Sandra'], teams: ['bride', 'groom', 'mc_ned'],
+                description: 'MC Ned announces Alvin & Sandra First Dance (check Ann Marie Photography & Captured Frames are ready).'
             },
             {
-                id: 34, time: '9:40 PM', title: 'Bouquet Toss', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned', 'Sandra'], teams: ['all', 'mc_ned', 'bride', 'bridesmaids', 'moh'],
-                description: 'MC Ned calls all single ladies onto the dance floor for the Bouquet Toss to build momentum into the party.'
-            },
-            {
-                id: 35, time: '9:45 PM', title: 'Dance Floor Opens!', location: 'Alpha Dining - The Gallery', responsible: ['DJ Jesse'], teams: ['all', 'mc_ned', 'bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
+                id: 34, time: '9:45 PM', title: 'Dance Floor Opens!', location: 'Alpha Dining - The Gallery', responsible: ['DJ Jesse'], teams: ['all', 'mc_ned', 'bride', 'groom', 'bridesmaids', 'groomsmen', 'moh'],
                 description: 'DJ Jesse opens the dance floor. Bridal party to bring the hype and keep the floor packed!'
+            },
+            {
+                id: 35, time: '10:00 PM', title: 'Bouquet Toss [TBC]', location: 'Alpha Dining - The Gallery', responsible: ['MC Ned', 'Sandra'], teams: ['all', 'mc_ned', 'bride', 'bridesmaids', 'moh'],
+                description: 'MC Ned calls all unmarried/single ladies to the front for the Bouquet Toss (if time permits). Ned returns the mic to the venue afterwards.'
             },
             {
                 id: 36, time: '11:45 PM', title: 'Party Over & Bump Out', location: 'Alpha Dining - The Gallery', responsible: ['Alpha Dining', 'MOH', 'TP'], teams: ['all', 'mc_ned', 'tp', 'moh'],
                 description: [
-                    { type: 'paragraph', text: '[TBC] Newlywed Send Off / Last Song. Bump out begins immediately—nothing can be left for the following day.' },
+                    { type: 'paragraph', text: '[TBC] Newlywed Send Off / Last Song. Bump out begins immediately—all items must be collected tonight (nothing can be collected the following day).' },
                     { type: 'checklist', items: ['Collect Signs & Drapes', 'Collect Flowers', 'Collect Guest Book', 'Collect Wishing Well'] }
                 ]
             }
@@ -542,11 +570,11 @@
                             <ul className="space-y-4 text-sm text-[#5E1523] font-light">
                                 <li className="flex gap-3 items-start">
                                     <div className="mt-0.5"><Icons.Search className="w-4 h-4 text-[#C0687C]" /></div>
-                                    <span><strong>Filter</strong> to find specific events or view only what matters to your role.</span>
+                                    <span><strong>Search &amp; Filter</strong> to find specific events or view only what matters to your role.</span>
                                 </li>
                                 <li className="flex gap-3 items-start">
                                     <div className="mt-0.5"><Icons.ChevronDown className="w-4 h-4 text-[#C0687C]" /></div>
-                                    <span><strong>Tap any event</strong> to expand it and see full details, game links, and checklists.</span>
+                                    <span><strong>Tap any event</strong> to expand it and see full details, game links, map links, and checklists.</span>
                                 </li>
                                 <li className="flex gap-3 items-start">
                                     <div className="mt-0.5"><Icons.Heart className="w-4 h-4 text-[#C0687C]" fillClass="fill-[#F5E6E9]" /></div>
@@ -651,32 +679,43 @@
                         <div className="bg-[#450D18] rounded-2xl p-6 border border-[#7A1D31]">
                             <h3 className="text-xl font-serif text-white mb-4 border-b border-[#7A1D31] pb-2">1. Reception Flow</h3>
                             <ul className="space-y-4 text-[#E7C0C8] font-light">
-                                <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">6:30 PM</span><span>Cocktail hour starts (Ann Marie &amp; Captured Frames shoot room details).</span></li>
+                                <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">6:30 PM</span><span>Cocktail hour starts. <strong>Check in with Martha for sound check.</strong></span></li>
                                 <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">6:55 PM</span><span>Ask guests to check the draping for seat numbers and take their seats for 7:00 PM.</span></li>
-                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">7:00 PM</span><span><strong>Opening &amp; Entrances:</strong> Welcome &amp; intro, housekeeping (bathrooms, smoking area, exits), call out photobooth timings, guest book &amp; wishing well. Build hype (napkin swings / cheers). Introduce <strong>Groomsmen &rarr; Bridesmaids (entering with trays of shots!) &rarr; Alvin &amp; Sandra</strong>. Wrap up by announcing entrees &amp; speeches shortly.</span></li>
+                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">7:00 PM</span><span><strong>Opening &amp; Entrances:</strong> Welcome &amp; intro, housekeeping (bathrooms, smoking area, exits), call out photobooth timings, guest book, wishing well &amp; games. Build hype (napkin swings / cheers). <strong>[7:05 PM]</strong> Introduce <strong>Groomsmen &rarr; Bridesmaids (entering with trays of shots!) &rarr; Alvin &amp; Sandra</strong>. Announce <strong>First Dance Song Sweepstake</strong> (write guess on board next to DJ). Wrap up by announcing entrees &amp; speeches shortly.</span></li>
                                 <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">7:15 PM</span><span>Entrees served (make sure Alvin &amp; Sandra eat!).</span></li>
                                 <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">7:30 PM</span><span><strong>Speeches 1 (2.5m each):</strong> Jess (MOH - Uni Friend), then Mikey &amp; Devan (Groomsmen - High School Friends).</span></li>
-                                <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">8:00 PM</span><span>Mains served (crew meals served simultaneously). [TBC] Game.</span></li>
-                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">8:20 PM</span><span><strong>Speeches 2 (2.5m each):</strong> Kevin (Sandra Brother), then Eugene &amp; Regina (Alvin Parents).</span></li>
-                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">8:40 PM</span><span><strong>Photo Blitz:</strong> Call groups to the stage (ensure Ann Marie &amp; Captured Frames are ready).</span></li>
-                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">9:00 PM</span><span><strong>Couple Speech + Cake Cut:</strong> Introduce Alvin &amp; Sandra.</span></li>
-                                <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">9:15 PM</span><span>Dessert served &amp; Sandra dress change [TBC].</span></li>
-                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">9:30 PM</span><span><strong>First Dance:</strong> Announce Alvin &amp; Sandra (check photographers are ready).</span></li>
-                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">9:40 PM</span><span><strong>Bouquet Toss:</strong> Call all single ladies onto the dance floor.</span></li>
+                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">7:45 PM</span><span><strong>Photo Blitz:</strong> Call groups to the stage and queue the next group in advance (check Ann Marie &amp; Captured Frames are ready).</span></li>
+                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">8:00 PM</span><span><strong>Speeches 2 (2.5m each):</strong> [8:05 PM] Kevin (Sandra Brother), [8:10 PM] Eugene &amp; Regina (Alvin Parents).</span></li>
+                                <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">8:15 PM</span><span>Mains served (crew meals served simultaneously).</span></li>
+                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">8:30 PM</span><span><strong>Couple Speech + Cake Cut:</strong> Introduce Alvin &amp; Sandra.</span></li>
+                                <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">9:00 PM</span><span>Dessert served &amp; Sandra dress change.</span></li>
+                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">9:15 PM</span><span><strong>First Dance:</strong> Announce Alvin &amp; Sandra (check photographers are ready).</span></li>
                                 <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">9:45 PM</span><span><strong>DANCE FLOOR OPEN!</strong> Hand over to DJ Jesse.</span></li>
-                                <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">11:45 PM</span><span><strong>Party Over:</strong> Last song / Send off [TBC]. Remind bridal party/family that ALL items (signs, drapes, flowers, guest book, wishing well) must be taken tonight.</span></li>
+                                <li className="flex gap-4"><span className="font-mono text-[#D596A4] font-bold w-16 shrink-0">10:00 PM</span><span><strong>Bouquet Toss [TBC]:</strong> Call all unmarried/single ladies to the front (if time permits). <strong>Return mic to the venue.</strong></span></li>
+                                <li className="flex gap-4"><span className="font-mono text-white font-bold w-16 shrink-0">11:45 PM</span><span><strong>Party Over:</strong> Last song / Send off [TBC]. All items (signs, drapes, flowers, guest book, wishing well) must be taken tonight.</span></li>
                             </ul>
                         </div>
 
                         <div className="bg-[#450D18] rounded-2xl p-6 border border-[#7A1D31]">
-                            <h3 className="text-xl font-serif text-white mb-4 border-b border-[#7A1D31] pb-2">2. Photo Blitz List (8:40 PM)</h3>
-                            <ul className="list-disc pl-5 text-[#E7C0C8] space-y-1 font-light">
+                            <h3 className="text-xl font-serif text-white mb-4 border-b border-[#7A1D31] pb-2">2. Photo Blitz List (7:45 PM)</h3>
+                            <p className="text-xs text-[#D596A4] uppercase tracking-wider mb-3">Tip: Call the next group to queue while the current group shoots</p>
+                            <ol className="list-decimal pl-5 text-[#E7C0C8] space-y-1.5 font-light">
                                 <li>Menguito Family (5)</li>
                                 <li>Torres Family (5)</li>
                                 <li>Barcelon Family (8)</li>
                                 <li>Alvin Family Combined (18)</li>
                                 <li>Zhong Family (10)</li>
-                            </ul>
+                                <li>Yan Family (15)</li>
+                                <li>Sandra Family Combined</li>
+                                <li>Zhong Family (5)</li>
+                                <li>Wu Family (4)</li>
+                                <li>Lam Family (4)</li>
+                                <li>Alvin High School Friends (10)</li>
+                                <li>Alvin &amp; Sandra Uni Friends (12)</li>
+                                <li>Alvin Work Colleagues (8)</li>
+                                <li>Sandra Ceerose Colleagues (5)</li>
+                                <li>Sandra Cessleigh Colleagues (6)</li>
+                            </ol>
                         </div>
                     </div>
                 </div>
@@ -686,6 +725,7 @@
         const WeddingTimeline = () => {
             const [expandedEvents, setExpandedEvents] = useState([]);
             const [selectedFilters, setSelectedFilters] = useState(['all']);
+            const [searchQuery, setSearchQuery] = useState('');
             const [expandAll, setExpandAll] = useState(false);
             const [currentTime, setCurrentTime] = useState(new Date());
             
@@ -743,7 +783,19 @@
                 return null;
             };
 
-            const filteredEvents = events.filter(event => selectedFilters.includes('all') || event.teams.includes('all') || event.teams.some(team => selectedFilters.includes(team)));
+            const filteredEvents = events.filter(event => {
+                const teamMatch = selectedFilters.includes('all') || event.teams.includes('all') || event.teams.some(team => selectedFilters.includes(team));
+                if (!teamMatch) return false;
+                if (!searchQuery.trim()) return true;
+                const q = searchQuery.toLowerCase();
+                const matchText = (t) => (t || '').toLowerCase().includes(q);
+                let descMatch = false;
+                if (typeof event.description === 'string') descMatch = matchText(event.description);
+                else if (Array.isArray(event.description)) {
+                    descMatch = event.description.some(s => (s.text && matchText(s.text)) || (s.title && matchText(s.title)) || (s.items && s.items.some(i => matchText(i))));
+                }
+                return matchText(event.title) || matchText(event.location) || matchText(event.time) || descMatch || (event.responsible && event.responsible.some(r => matchText(r)));
+            });
 
             let currentEventId = null;
             for (let i = 0; i < filteredEvents.length; i++) {
@@ -757,7 +809,7 @@
             }
 
             useEffect(() => {
-                if (activeRef.current && view === 'timeline') {
+                if (activeRef.current && view === 'timeline' && !searchQuery) {
                     setTimeout(() => {
                         activeRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }, 500);
@@ -808,6 +860,19 @@
                 else { setExpandAll(true); setExpandedEvents(filteredEvents.map(e => e.id)); }
             };
 
+            const renderLocation = (loc) => {
+                const url = mapUrlFor(loc);
+                if (!url) {
+                    return <span className="inline-flex items-start gap-1.5 text-sm text-[#E7C0C8] font-light"><Icons.MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" /><span className="break-words">{loc}</span></span>;
+                }
+                return (
+                    <a href={url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="inline-flex items-start gap-1.5 text-sm text-[#E7C0C8] hover:text-white font-light transition-colors w-fit">
+                        <Icons.MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                        <span className="underline underline-offset-2 break-words">{loc}</span>
+                    </a>
+                );
+            };
+
             return (
                 <div className="overflow-x-hidden w-full relative min-h-screen bg-[#5E1523] text-[#FDFBF7]">
                     {activeChecklist && <ChecklistModal data={CONFIG.checklists[activeChecklist]} onClose={() => setActiveChecklist(null)} />}
@@ -829,7 +894,7 @@
                                 <div className="max-w-4xl mx-auto px-4 w-full">
                                     <div className="flex items-center justify-between w-full py-4">
                                         <button onClick={() => setShowFilters(!showFilters)} className="flex-1 flex items-center justify-center gap-2 text-[#F5E6E9] hover:text-white transition-colors">
-                                            <Icons.Search className="w-4 h-4" /><span className="font-serif text-sm uppercase tracking-wider">Filters &amp; Roles</span>
+                                            <Icons.Search className="w-4 h-4" /><span className="font-serif text-sm uppercase tracking-wider">Search &amp; Filters</span>
                                             {showFilters ? <Icons.ChevronUp className="w-4 h-4" /> : <Icons.ChevronDown className="w-4 h-4" />}
                                         </button>
                                         
@@ -846,6 +911,15 @@
 
                                     {showFilters && (
                                         <div className="pb-6 animate-in slide-in-from-top-2 border-t border-[#942B42] pt-4">
+                                            <div className="mb-4">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search events, people, locations..."
+                                                    value={searchQuery}
+                                                    onChange={e => setSearchQuery(e.target.value)}
+                                                    className="w-full px-4 py-2 rounded-lg bg-[#5E1523] text-white placeholder-[#D596A4] border border-[#942B42] focus:border-white outline-none text-sm"
+                                                />
+                                            </div>
                                             <div className="flex flex-wrap gap-2 justify-center">
                                                 {CONFIG.filters.map(filter => {
                                                     const isSelected = selectedFilters.includes(filter.id);
@@ -888,7 +962,7 @@
                                                                     <div className="flex-1 pr-4">
                                                                         <h3 className="text-xl font-serif mb-2 text-white">{event.title}</h3>
                                                                         <div className="flex flex-col gap-2 text-[#E7C0C8]">
-                                                                            <span className="inline-flex items-center gap-1.5 text-sm font-light"><Icons.MapPin className="w-3.5 h-3.5" />{event.location}</span>
+                                                                            {renderLocation(event.location)}
                                                                             {event.responsible && <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide"><Icons.User className="w-3.5 h-3.5" />{event.responsible.join(', ')}</span>}
                                                                         </div>
                                                                     </div>
@@ -916,7 +990,7 @@
                                                             <button onClick={() => toggleEvent(event.id)} className={`bg-[#7A1D31] rounded-xl border border-[#942B42] transition-all duration-300 ease-in-out w-full shadow-sm hover:bg-[#942B42] px-6 py-5 text-left flex items-center justify-between outline-none`}>
                                                                 <div className="flex-1 pr-2 sm:pr-4 min-w-0">
                                                                     <h3 className="text-lg sm:text-xl font-serif mb-2 text-white">{event.title}</h3>
-                                                                    <span className="inline-flex items-start gap-1.5 text-sm text-[#E7C0C8] font-light"><Icons.MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" /><span className="break-words">{event.location}</span></span>
+                                                                    {renderLocation(event.location)}
                                                                 </div>
                                                                 <Icons.ChevronDown className="w-5 h-5 text-[#D596A4] shrink-0" />
                                                             </button>
